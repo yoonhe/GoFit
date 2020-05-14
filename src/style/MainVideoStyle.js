@@ -1,5 +1,16 @@
 import styled from 'styled-components';
-
+export const MainVideoWrap = styled.div`
+  width: 100%;
+  height: 500px;
+  border: 1px solid #dcdcdc;
+  & > div {
+    height: 100%;
+  }
+  & iframe {
+    width: 100%;
+    height: 100%;
+  }
+`;
 export const SelectedVideoButton = styled.button`
   display: block;
   position: relative;
@@ -30,8 +41,26 @@ export const SelectedVideoButton = styled.button`
   }
 `;
 
-const UnicornAfter = styled.div`
-  &:after {
-    content: ' 🦄';
+export const SelectVideoTitle = styled.div`
+  position: relative;
+  margin-top: 15px;
+  padding: 20px;
+  border: 1px solid #dcdcdc;
+
+  & button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    padding: 10px 20px;
+    background: none;
+    border: 1px solid #dcdcdc;
+    cursor: pointer;
+    transition: 0.3s linear;
+  }
+
+  & button:disabled {
+    background: #eee;
+    color: #999;
+    cursor: not-allowed;
   }
 `;
