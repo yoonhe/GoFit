@@ -1,5 +1,6 @@
 import React from 'react';
 import MainVideo from '../components/MainVideo';
+import MainCalendar from '../components/Calendar';
 
 const Main = () => {
   return (
@@ -12,7 +13,7 @@ const Main = () => {
       }}
     >
       <MainVideo />
-      <div style={{ width: '60%' }}>캘린더 영역</div>
+      <MainCalendar />
     </div>
   );
 };

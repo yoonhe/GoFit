@@ -16,7 +16,8 @@ const enhancer =
     : compose(
         // production 모드가 아닐때 리덕스데브툴 노출
         applyMiddleware(sagaMiddleware),
-        true && typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined'
+        typeof window !== 'undefined' &&
+          window.__REDUX_DEVTOOLS_EXTENSION__ !== 'undefined'
           ? window.__REDUX_DEVTOOLS_EXTENSION__()
           : (f) => f
       );
