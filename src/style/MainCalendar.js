@@ -5,6 +5,10 @@ export const CalendarWrap = styled.div`
   & > * {
     padding: 15px;
   }
+  & > div {
+    margin: 0 auto;
+    width: 350px;
+  }
   .calendar-head {
     position: relative;
     text-align: center;
@@ -25,7 +29,8 @@ export const CalendarWrap = styled.div`
   }
   .calendar-body > div {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: end;
   }
   .calendar-body > div > span {
     width: 50px;
@@ -34,10 +39,11 @@ export const CalendarWrap = styled.div`
     text-align: center;
     cursor: pointer;
 
-    &:first-child {
+    &:first-child,
+    &:nth-child(7n + 1) {
       color: red;
     }
-    &:last-child {
+    &:nth-child(7n) {
       color: blue;
     }
     &.prev-month-day {
