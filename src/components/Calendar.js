@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { CalendarWrap } from '../style/MainCalendar';
+import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
+import { markCalendar } from '../reducers/calendar';
 
 const MainCalendar = () => {
+  const { healthLog } = useSelector((store) => store.calendar);
+  console.log('달력 헬스로그 ? ', healthLog);
   const weekdays = moment.weekdaysShort(); // ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
   const months = moment.months(); // ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
   const [currentMonth, setCurrentMonth] = useState(moment());
-  const [healthDay, setHealthDay] = useState([15, 20]);
 
   const year = () => {
     return currentMonth.format('Y');
@@ -41,7 +44,8 @@ const MainCalendar = () => {
 
   let dayInMonth = [];
   for (let d = 1; d <= daysInMonth(); d++) {
-    let isHealth = healthDay.includes(d) && 'selected';
+    // 해당하는 달에만 체크가 되야함.(해결전)
+    let isHealth = healthLog.includes(d) && 'selected';
     dayInMonth.push(
       <span key={d} className={isHealth}>
         {d}
@@ -50,13 +54,14 @@ const MainCalendar = () => {
   }
 
   let monthNum = Number(months.indexOf(month()));
-  console.log('이번달 ? ', monthNum);
+  console.log('이번달 ? ', monthNum + 1);
 
   const setMonth = (buttonType) => {
     monthNum = buttonType === 'prev' ? monthNum - 1 : monthNum + 1;
     let copyMonth = Object.assign({}, currentMonth);
+    console.log('copyMonth ? ', copyMonth);
     let selectedMonth = moment(copyMonth).set('month', monthNum);
-    console.log('selectedMonth ? ', selectedMonth.month);
+    console.log('selectedMonth ? ', selectedMonth);
     setCurrentMonth(selectedMonth);
   };
 

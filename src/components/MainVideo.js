@@ -6,8 +6,15 @@ import {
   SelectedVideoButton,
   SelectVideoTitle,
 } from '../style/MainVideoStyle';
+import { useSelector, useDispatch } from 'react-redux';
+import { markCalendar } from '../reducers/calendar';
+import moment from 'moment';
 
 const MainVideo = () => {
+  const dispatch = useDispatch();
+  const { healthLog } = useSelector((store) => store.calendar);
+  console.log('비디오 healthLog ? ', healthLog);
+  const todayDate = moment().format('D');
   const dummyData = {
     videoId: 'TUvQKwLWAUg',
     videoTitle: '이지은 종아리 스트레칭',
@@ -34,15 +41,17 @@ const MainVideo = () => {
     if (playerStatus.data == -1) {
       setPlayerState('unstarted');
     } else if (playerStatus.data == 0) {
-      setPlayerState('ended'); //  = yellow
+      setPlayerState('ended'); // ended
+      dispatch(markCalendar(Number(todayDate)));
+      // 데이터베이스에 저장해줘야 하지 않을까?...
     } else if (playerStatus.data == 1) {
-      setPlayerState('playing'); //  = green
+      setPlayerState('playing'); // playing
     } else if (playerStatus.data == 2) {
-      setPlayerState('paused'); //  = red
+      setPlayerState('paused'); // paused
     } else if (playerStatus.data == 3) {
-      setPlayerState('buffering'); // buffering = purple
+      setPlayerState('buffering'); // buffering
     } else if (playerStatus.data == 5) {
-      setPlayerState('cued'); // cued = orange
+      setPlayerState('cued'); // cued
     }
     console.log('playerState ?', playerState);
   };

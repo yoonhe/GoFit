@@ -7,6 +7,7 @@ import calendar from './calendar';
 import video from './video';
 
 const rootReducer = combineReducers({
+  calendar,
   dayLog,
   user,
 });
