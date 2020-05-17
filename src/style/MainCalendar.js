@@ -50,9 +50,21 @@ export const CalendarWrap = styled.div`
       color: #dcdcdc;
     }
     &.selected {
-      border-radius: 50%;
+      position: relative;
       color: #fff;
+    }
+    &.selected:before {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: calc(100% - 15px);
+      height: calc(100% - 15px);
       background: skyblue;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      content: '';
+      z-index: -1;
     }
   }
 `;
