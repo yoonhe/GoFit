@@ -1,12 +1,14 @@
 // import '@babel/polyfill';
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./pages/App";
-import { createStore, applyMiddleware, compose } from "redux";
-import createSagaMiddleware from "redux-saga";
-import rootSaga from "./sagas";
-import { Provider } from "react-redux"; // 리액트 컴포넌트들의 리덕스 스테이트를 제공해줌
-import reducer from "./reducers";
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './pages/app';
+import { createStore, applyMiddleware, compose } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import rootSaga from './sagas';
+import { Provider } from 'react-redux'; // 리액트 컴포넌트들의 리덕스 스테이트를 제공해줌
+import reducer from './reducers';
+
 
 const sagaMiddleware = createSagaMiddleware();
 
