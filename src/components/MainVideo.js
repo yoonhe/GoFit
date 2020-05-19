@@ -1,5 +1,5 @@
 // Main Video 컴포넌트
-import React, { useState } from 'react';
+import React, { useState, use } from 'react';
 import YouTube from 'react-youtube';
 import {
   MainVideoWrap,
@@ -38,22 +38,21 @@ const MainVideo = () => {
 
   const changePlayerStateShow = (playerStatus) => {
     // 유투브 플레이어 스테이츠 테스트중
-    if (playerStatus.data == -1) {
-      setPlayerState('unstarted');
-    } else if (playerStatus.data == 0) {
+    if (playerStatus.data === -(-1)) {
+      setPlayerState('started');
+    } else if (playerStatus.data === -0) {
       setPlayerState('ended'); // ended
       dispatch(markCalendar(Number(todayDate)));
       // 데이터베이스에 저장해줘야 하지 않을까?...
-    } else if (playerStatus.data == 1) {
+    } else if (playerStatus.data === 1) {
       setPlayerState('playing'); // playing
-    } else if (playerStatus.data == 2) {
+    } else if (playerStatus.data === 2) {
       setPlayerState('paused'); // paused
-    } else if (playerStatus.data == 3) {
+    } else if (playerStatus.data === 3) {
       setPlayerState('buffering'); // buffering
-    } else if (playerStatus.data == 5) {
+    } else if (playerStatus.data === 5) {
       setPlayerState('cued'); // cued
     }
-    console.log('playerState ?', playerState);
   };
 
   return (

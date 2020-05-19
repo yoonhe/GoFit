@@ -6,7 +6,7 @@ import daylog from './daylog';
 import calendar from './calendar';
 
 export default function* rootSaga() {
-  yield all([fork(user)]);
+  yield all([fork(calendar)]);
 }
 
 // export default function* rootSaga() {
