@@ -1,26 +1,51 @@
-export const initialState = {
-  currentVideo: {},
+//Store의 state는 오직 액션으로만 변경 가능
+const initialState = {
+  videos: [],
+  selectedVideo: []
 };
+// action type(명령어). 액션은 하나의 객체
+export const LOAD_VIDEO = "LOAD_VIDEO";
+export const SELECT_VIDEO = "SELECT_VIDEO";
+export const LOAD_VIDEO_SUCCESS = "LOAD_VIDEO_SUCCESS";
 
-const LOAD_ViDEO = 'LOAD_ViDEO';
+// action creators(액션 메서드). 액션객체를 리턴함
+export const loadVideo = searchTerm => ({
+  type: LOAD_VIDEO,
+  searchTerm
+});
+export const loadVideoSuccess = videos => ({
+  type: LOAD_VIDEO_SUCCESS,
+  videos
+});
+export const selectVideo = selected => ({
+  type: SELECT_VIDEO,
+  selected
+});
 
-export const load_log = {
-  type: LOAD_ViDEO,
-};
-
+//액션을 받아서 새로운 상태를 반환함.
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_LOG: {
-      // state Log값 불러오기
+    case LOAD_VIDEO: {
       return {
-        ...state, // 스테이트 '불변성'을 위해 새로운 객체를 만들어줌(스프레드)
+        ...state
+      };
+    }
+    case LOAD_VIDEO_SUCCESS: {
+      console.log("action.data :", action.data);
+      return {
+        ...state,
+        videos: action.data
+      };
+    }
+    case SELECT_VIDEO: {
+      console.log("action.selected :", action.selected);
+      return {
+        ...state,
+        selectedVideo: action.selected
       };
     }
     default: {
-      // 정의해준 액션 이외에 다른 액션이 들어오면?
-      return {
-        ...state,
-      };
+      return state;
     }
   }
 };

@@ -1,4 +1,4 @@
-import { all, fork } from 'redux-saga/effects';
+import { all, call, fork } from 'redux-saga/effects';
 
 import user from './user';
 import video from './video';
@@ -6,7 +6,7 @@ import daylog from './daylog';
 import calendar from './calendar';
 
 export default function* rootSaga() {
-  yield all([fork(user)]);
+	yield all([fork(calendar), fork(video), fork(user), fork(daylog)]);
 }
 
 // export default function* rootSaga() {
