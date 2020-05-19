@@ -8,6 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 import { Provider } from 'react-redux'; // 리액트 컴포넌트들의 리덕스 스테이트를 제공해줌
 import reducer from './reducers';
+import { BrowserRouter } from 'react-router-dom';
 
 
 const sagaMiddleware = createSagaMiddleware();
@@ -35,7 +36,9 @@ console.log("store.getState:", store.getState());
 ReactDOM.render(
   // 자식 컴포넌트들이 리덕스 스테이트에 접근 가능해진다
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.querySelector("#root")
 );
