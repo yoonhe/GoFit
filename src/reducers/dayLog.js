@@ -1,45 +1,43 @@
 // store, reducer, action은 여러곳에서 재사용되기 때문에 export 해서 모듈로 만들어준다
 
-export const initialState = {
-  dayLogs: [],
+export const LOAD_DAYLOG = 'LOAD_DAYLOG';
+export const GET_DAYLOG = 'GET_DAYLOG';
+export const POST_DAYLOG = 'POST_DAYLOG';
+export const NEW_DAYLOG = 'NEW_DAYLOG';
+
+
+const initialState = {
+  daylogs: []
 };
 
-const LOAD_LOG = 'LOAD_LOG';
-const ADD_DAYLOG = 'ADD_DAYLOG';
 
-export const load_log = {
-  type: LOAD_LOG,
-};
+export const fetchDaylog = () =>{
+  return {
+    type: LOAD_DAYLOG
+  }
+}
 
-export const addLog = {
-  type: ADD_DAYLOG,
-  data: {
-    text: '운동완료!!',
-    UserId: 1,
-    User: {
-      email: 'test@test',
-      username: 'test',
-      nickname: 'testNickname',
-      height: '180',
-      weight: '60',
-    },
-  },
-};
+export const postDaylog = (data) => {
+  return{
+    type: NEW_DAYLOG,
+    newDaylog: data
+  }
+}
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_LOG: {
-      // state Log값 불러오기
-      return {
-        ...state, // 스테이트 '불변성'을 위해 새로운 객체를 만들어줌(스프레드)
-      };
-    }
-    case ADD_DAYLOG: {
+    case GET_DAYLOG: {
       // state 새로운 Log 추가하기
+      console.log('action.daylogs: ', action.daylogs)
       return {
         ...state,
-        dayLogs: [action.data, ...state.dayLogs],
+        daylogs: action.daylogs
       };
+    }
+    case POST_DAYLOG: {
+      return {
+        ...state
+      }
     }
     default: {
       // 정의해준 액션 이외에 다른 액션이 들어오면?
