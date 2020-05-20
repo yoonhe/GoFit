@@ -27,6 +27,7 @@ module.exports = {
   },
 
   output: {
+    // publicPath: '/', => dist 폴더 안에 index.js에 /bundle.js 이렇게 절대경로로 표시됨.
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
   },
