@@ -1,6 +1,6 @@
 // Main Video 컴포넌트
 
-import React, { useState, use } from 'react';
+import React, { useState, useEffect } from 'react';
 import YouTube from 'react-youtube';
 import {
   MainVideoWrap,
@@ -12,17 +12,21 @@ import { markCalendar } from '../reducers/calendar';
 import moment from 'moment';
 
 const MainVideo = () => {
+  // const dummyData = null;
+  const dummyData = {
+    videoTitle:
+      '[EN/CH]하체비만 탈출 첫번째는 골반교정! 저녁에도 아침같은 다리 완성 (Lower Body Stretching, 다노레전드스트레칭, 골반교정스트레칭) ㅣ 다노티비',
+    videoId: 'VVn5IUM8sms',
+  };
+
   const dispatch = useDispatch();
   const { healthLog } = useSelector((store) => store.calendar);
   console.log('비디오 healthLog ? ', healthLog);
   const todayDate = moment().format('D');
-  const dummyData = {
-    videoId: 'TUvQKwLWAUg',
-    videoTitle: '이지은 종아리 스트레칭',
-  };
 
   const [isWatchedVideo, setIsWatchedVideo] = useState(false); // 동영상을 봤는지 안봤는지
-  const [isSelectedData, setIsSelectedData] = useState(dummyData); // 선택된 동영상이 있는지 없는지
+  const [isSelectedVideoData, setIsSelectedVideoData] = useState(dummyData); // 선택된 동영상이 있는지 없는지
+  console.log('isSelectedVideoData ? ', isSelectedVideoData);
   const [playerState, setPlayerState] = useState('unstarted');
 
   const videoOptions = {
@@ -42,7 +46,9 @@ const MainVideo = () => {
     if (playerStatus.data === -(-1)) {
       setPlayerState('started');
     } else if (playerStatus.data === -0) {
+      onPlayerReady();
       setPlayerState('ended'); // ended
+      alert('운동끝났습니다! 오늘도 수고 많으셨어요^^');
       dispatch(markCalendar(Number(todayDate)));
       // 데이터베이스에 저장해줘야 하지 않을까?...
     } else if (playerStatus.data === 1) {
@@ -56,29 +62,34 @@ const MainVideo = () => {
     }
   };
 
+  useEffect(() => {}, []);
+
   return (
     <div style={{ width: '100%' }}>
       <p>비디오 상태 : {playerState}</p>
       <MainVideoWrap>
-        {!isSelectedData ? (
+        {!isSelectedVideoData ? (
           <SelectedVideoButton></SelectedVideoButton>
         ) : (
-          <>
+          <div
+            className={
+              playerState === 'ended' ? 'video-item complete' : 'video-item'
+            }
+          >
             <YouTube
-              videoId={isSelectedData.videoId}
+              videoId={isSelectedVideoData.videoId}
               opts={videoOptions}
-              onPlay={onPlayerReady}
               onStateChange={changePlayerStateShow}
             />
-          </>
+          </div>
         )}
       </MainVideoWrap>
-      {!isSelectedData ? (
+      {!isSelectedVideoData ? (
         <SelectVideoTitle>선택된 영상이 없습니다.</SelectVideoTitle>
       ) : (
         <SelectVideoTitle>
           <button disabled={isWatchedVideo}>수정</button>
-          {isSelectedData.videoTitle}
+          {isSelectedVideoData.videoTitle}
         </SelectVideoTitle>
       )}
     </div>

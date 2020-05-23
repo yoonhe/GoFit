@@ -17,11 +17,11 @@ export const markCalendar = (currentLog) => {
   };
 };
 
-export const requestHealthLog = (currentMonth) => {
+export const requestHealthLog = (currentDate) => {
   console.log('2. requestHealthLog 실행');
   return {
     type: HEALTH_LOG_REQUEST,
-    month: currentMonth,
+    date: currentDate,
   };
 };
 

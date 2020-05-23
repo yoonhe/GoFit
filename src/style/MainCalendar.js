@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 
 export const CalendarWrap = styled.div`
-  width: 60%;
+  width: 40%;
   & > * {
-    padding: 15px;
   }
   & > div {
     margin: 0 auto;
@@ -11,6 +10,7 @@ export const CalendarWrap = styled.div`
   }
   .calendar-head {
     position: relative;
+    margin-bottom: 10px;
     text-align: center;
   }
 

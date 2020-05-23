@@ -5,12 +5,25 @@ import {
   HEALTH_LOG_SUCCESS,
 } from '../reducers/calendar';
 
-function* requestHealthLogAPI(action) {
-  let actionData = [1, 15]; // api 요청 응답값 담아줄 예정(현재는 더미 데이터)
+import axios from 'axios';
 
+function requestHealthLogAPI(currentDate) {
+  // 서버로 헬스로그 요청 보내는 부분
+  return axios.get(`calendar/${currentDate}`);
+}
+
+function* requestHealthLog(action) {
   try {
-    yield console.log('3. requestHealthLogAPI 호출 성공');
-    console.log('action.month(payload) ? ', action.month);
+    let actionData = yield requestHealthLogAPI(action.date);
+    console.log('===================================');
+    console.log('3. requestHealthLogAPI 호출 성공');
+    console.log('split 전 !!!! actionData ? ', actionData.data);
+    actionData = actionData.data
+      .map((item) => item.createdAt.split('T')[0])
+      .map((item) => {
+        return Number(item.split('-')[2]);
+      });
+    console.log('split 후 !!!! actionData ? ', actionData);
     // payload값이 담김
     // action.[payload key 값]
 
@@ -24,5 +37,5 @@ function* requestHealthLogAPI(action) {
 }
 
 export default function* watchRequestHealthLog() {
-  yield takeEvery(HEALTH_LOG_REQUEST, requestHealthLogAPI);
+  yield takeEvery(HEALTH_LOG_REQUEST, requestHealthLog);
 }

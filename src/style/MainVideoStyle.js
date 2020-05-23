@@ -1,12 +1,34 @@
 import styled from 'styled-components';
 export const MainVideoWrap = styled.div`
   width: 100%;
-  height: 500px;
+  height: 600px;
   border: 1px solid #dcdcdc;
-  & > div {
+
+  & .video-item.complete {
+    position: relative;
+  }
+  & .video-item.complete:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background: skyblue;
+    font-size: 50px;
+    color: #fff;
+    opacity: 0.9;
+    content: 'COMPLETE';
+  }
+
+  & .video-item,
+  & .video-item > div {
     height: 100%;
   }
-  & iframe {
+
+  & .video-item iframe {
     width: 100%;
     height: 100%;
   }
@@ -44,13 +66,14 @@ export const SelectedVideoButton = styled.button`
 export const SelectVideoTitle = styled.div`
   position: relative;
   margin-top: 15px;
-  padding: 20px;
+  padding: 20px 100px 20px 20px;
   border: 1px solid #dcdcdc;
 
   & button {
     position: absolute;
-    right: 10px;
-    top: 10px;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
     padding: 10px 20px;
     background: none;
     border: 1px solid #dcdcdc;

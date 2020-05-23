@@ -57,10 +57,10 @@ const MainCalendar = () => {
   };
 
   useEffect(() => {
+    const todayDate = currentMonth.format('YYYY-MM');
     console.log('1. requestHealthLog 호출');
-    console.log('action ? ', requestHealthLog(monthNum + 1));
-    dispatch(requestHealthLog(monthNum + 1));
-  }, []); // componentDidMount와 같은 역할
+    dispatch(requestHealthLog(todayDate));
+  }, [currentMonth]); // componentDidMount와 같은 역할
 
   return (
     <CalendarWrap>
