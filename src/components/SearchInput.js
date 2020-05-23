@@ -1,52 +1,34 @@
-import React from 'react';
-import * as videoAction from '../reducers/video';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { loadVideo } from '../reducers/video';
 
-class SearchInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchTerm: ''
-    };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+const SearchInput = () => {
+  const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState('');
 
-  handleInputChange(e) {
-    this.setState({
-      searchTerm: e.target.value
-    });
-  }
+  const handleInputChange = e => {
+    setSearchTerm(e.target.value);
+  };
 
-  handleSubmit(e) {
+  const handleSubmit = e => {
     e.preventDefault();
-    const searchTerm = this.state.searchTerm;
     console.log('searchTerm :', searchTerm);
-    const { VideoAction } = this.props;
-    VideoAction.loadVideo(searchTerm);
-  }
+    dispatch(loadVideo(searchTerm));
+  };
 
-  render() {
-    return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            type='text'
-            value={this.state.searchTerm}
-            placeholder='운동 검색'
-            onChange={this.handleInputChange}
-          />
-          <button type='submit'>검색</button>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input
+          type='text'
+          value={searchTerm}
+          placeholder='운동 검색'
+          onChange={handleInputChange}
+        />
+        <button type='submit'>검색</button>
+      </form>
+    </div>
+  );
+};
 
-export default connect(
-  state => ({}),
-  dispatch => ({
-    VideoAction: bindActionCreators(videoAction, dispatch)
-  })
-)(SearchInput);
+export default SearchInput;
