@@ -1,27 +1,49 @@
 import React, { useMemo, Component } from 'react';
-import DaylogEntry from './DaylogEntry'
+import DaylogEntry from './DaylogEntry';
+import axios from 'axios';
+axios.defaults.withCredentials = true;
 
-const DaylogList = ({daylogs}) => {
-    console.log('daylog list called')
-    //날짜 나중 순 sorting 
-    daylogs.sort(function(x, y) {
-        const xdate = Date.parse(x.date)
-        const ydate = Date.parse(y.date)
-        return ydate - xdate
-    })
+const DaylogList = ({ daylogs }) => {
+	console.log('daylog list called');
 
-    console.log('props.daylogs ??' , daylogs)
-    return (
-        <div>
-            <h3> Daylog List </h3>
-            {
-                daylogs.length !== 0? 
-                daylogs.map((day) => <DaylogEntry log = {day}/>)
-                : <div></div>
-            }
-        </div>
-    )
-}
+	const dayGroup = (daylogs) => {
+		console.log('daylog goup function called');
+		let newlogs = {};
+		daylogs.map((daylog) => {
+			const daylogdate = daylog.date;
+			if (newlogs[daylogdate] === undefined) {
+				newlogs[daylogdate] = [];
+				newlogs[daylogdate].push(daylog);
+			} else {
+				newlogs[daylogdate].push(daylog);
+			}
+		});
+		return newlogs;
+	};
+	const daylogsGroupByDate = dayGroup(daylogs);
+	console.log('props.daylogs ??', daylogs);
+	//날짜 나중 순 sorting -> object 로 만들때 자동으로 날짜 오름차순으로 만들어짐 출력은 반대이므로 reverse
+	const sortedDate = Object.keys(daylogsGroupByDate).reverse();
 
+	return (
+		<div>
+			<h3> Daylog List </h3>
+			{daylogs.length !== 0 ? (
+				sortedDate.map((date) => {
+					return (
+						<div>
+							<h3>{date}</h3>
+							{daylogsGroupByDate[date].map((day) => (
+								<DaylogEntry log={day} />
+							))}
+						</div>
+					);
+				})
+			) : (
+				<div></div>
+			)}
+		</div>
+	);
+};
 
 export default DaylogList;
