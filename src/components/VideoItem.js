@@ -1,13 +1,11 @@
 import React from 'react';
-import * as videoAction from '../reducers/video';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch } from 'react-redux';
+import { selectVideo } from '../reducers/video';
 
-const VideoItem = ({ video, thumbnail, title, VideoAction }) => {
+const VideoItem = ({ video, thumbnail, title }) => {
+  const dispatch = useDispatch();
   const handleSelect = () => {
-    // console.log('video : ', video);
-    console.log('VideoAction : ', VideoAction);
-    VideoAction.selectVideo(video);
+    dispatch(selectVideo(video));
   };
 
   return (
