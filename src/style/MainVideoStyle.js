@@ -1,10 +1,20 @@
 import styled from 'styled-components';
 export const MainVideoWrap = styled.div`
+  position: relative;
   width: 100%;
-  height: 600px;
-  border: 1px solid #dcdcdc;
+  height: 100%;
 
-  & .video-item.complete {
+  & .video-item-wrap {
+    display: none;
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  & .video-item-wrap.on {
+    display: block;
+  }
+  & .video-item & .video-item.complete {
     position: relative;
   }
   & .video-item.complete:after {
@@ -21,6 +31,7 @@ export const MainVideoWrap = styled.div`
     color: #fff;
     opacity: 0.9;
     content: 'COMPLETE';
+    cursor: not-allowed;
   }
 
   & .video-item,
@@ -30,14 +41,44 @@ export const MainVideoWrap = styled.div`
 
   & .video-item iframe {
     width: 100%;
-    height: 100%;
+  }
+
+  & .video-index-button {
+    position: absolute;
+    left: 0;
+    bottom: 120px;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+  }
+  & .video-index-button li {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 1px solid #fff;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0.1);
+    border-radius: 50%;
+    text-indent: -999999rem;
+    cursor: pointer;
+    transition: 0.2s linear;
+    vertical-align: middle;
+    opacity: 0.5;
+  }
+  & .video-index-button li:hover,
+  & .video-index-button li.on {
+    opacity: 1;
+  }
+  & .video-index-button li + li {
+    margin-left: 20px;
   }
 `;
 export const SelectedVideoButton = styled.button`
   display: block;
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 600px;
   border: 10px solid #dcdcdc;
   box-sizing: border-box;
   cursor: pointer;
