@@ -1,4 +1,4 @@
-import { put, call, takeEvery } from 'redux-saga/effects';
+import { put, call, takeEvery, takeLatest } from 'redux-saga/effects';
 import {
   HEALTH_LOG_REQUEST,
   requestHealthLogSuccess,
@@ -15,17 +15,12 @@ function requestHealthLogAPI(currentDate) {
 function* requestHealthLog(action) {
   try {
     let actionData = yield requestHealthLogAPI(action.date);
-    console.log('===================================');
     console.log('3. requestHealthLogAPI 호출 성공');
-    console.log('split 전 !!!! actionData ? ', actionData.data);
     actionData = actionData.data
       .map((item) => item.createdAt.split('T')[0])
       .map((item) => {
         return Number(item.split('-')[2]);
       });
-    console.log('split 후 !!!! actionData ? ', actionData);
-    // payload값이 담김
-    // action.[payload key 값]
 
     yield put({
       type: HEALTH_LOG_SUCCESS,
@@ -37,5 +32,5 @@ function* requestHealthLog(action) {
 }
 
 export default function* watchRequestHealthLog() {
-  yield takeEvery(HEALTH_LOG_REQUEST, requestHealthLog);
+  yield takeLatest(HEALTH_LOG_REQUEST, requestHealthLog);
 }

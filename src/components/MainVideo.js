@@ -1,5 +1,4 @@
 // Main Video 컴포넌트
-
 import React, { useState, useCallback } from 'react';
 import { MainVideoWrap } from '../style/MainVideoStyle';
 import { SelectedVideoButton, SelectVideoTitle } from '../style/MainVideoStyle';

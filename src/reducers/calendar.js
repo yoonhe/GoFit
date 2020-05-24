@@ -2,7 +2,7 @@ import produce from 'immer';
 
 export const initialState = {
   // currentMonth: '',
-  healthLog: [],
+  healthLog: null,
 };
 
 export const MARK_CALENDAR = 'MARK_CALENDAR';

@@ -17,16 +17,20 @@ const Main = (props) => {
 	const daylogs = useSelector((state) => state.dayLog.daylogs);
 	const isLogin = useSelector((state) => state.user.isLogin);
 	const dispatch = useDispatch();
+  
 	useEffect(() => {
 		dispatch(daylogAction.fetchDaylog());
 	}, []);
+  
 	if (!isLogin) {
 		return <Redirect to="/login" />;
 	}
+  
 	const handleLogout = () => {
 		console.log('logout clicked');
 		dispatch(loginAction.postlogout());
 	};
+  
 	return (
     <MainWrap>
       <MainTopWrap>
