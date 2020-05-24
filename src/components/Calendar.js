@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { CalendarWrap } from '../style/MainCalendar';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
@@ -10,13 +10,10 @@ const MainCalendar = () => {
   const [currentMonth, setCurrentMonth] = useState(moment());
   const weekdays = moment.weekdaysShort(); // ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
   const months = moment.months(); // ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-
-  console.log('달력 헬스로그 ? ', healthLog);
-
-  const year = currentMonth.format('Y');
   const month = currentMonth.format('MMMM'); // MMMM => May, MM => 05, M=>5
   let monthNum = Number(months.indexOf(month));
-  console.log('이번달 ? ', monthNum + 1);
+
+  const year = currentMonth.format('Y');
   const daysInMonth = currentMonth.daysInMonth(); // 이번달 날짜수(5월 => 31)
   const firstDayMonth = moment(currentMonth).startOf('month').format('d'); // Day of week(이번달 첫날짜의 요일) => 0 ~ 6(일 ~ 토)
 
@@ -24,43 +21,54 @@ const MainCalendar = () => {
   // const currentDate = currentMonth.get('date');
   // const currentDay = currentMonth.format('D'); // D : 날짜, d : 요일
 
-  let blank = [];
-  for (let i = 0; i < firstDayMonth; i++) {
-    // 이번달이 시작되는 첫 날짜의 요일 전까지 공백처리
-    blank.push(
-      <span className="prev-month-day" key={`blank${i}`}>
-        {''}
-      </span>
-    );
-  }
-
-  let dayInMonth = [];
-  for (let d = 1; d <= daysInMonth; d++) {
-    // 해당하는 달에만 체크가 되야함.(해결전)
-    let isHealth = healthLog.includes(d) ? 'selected' : '';
-    dayInMonth.push(
-      <span key={`healthDay${d}`} className={isHealth}>
-        {d}
-      </span>
-    );
-  }
-
-  const setMonth = (buttonType) => {
-    // 버튼을 클릭할때마다 서버에 해당하는 달의 헬스로그를 요청하면 되지 않을까?
-
-    monthNum = buttonType === 'prev' ? monthNum - 1 : monthNum + 1;
-    let copyMonth = Object.assign({}, currentMonth);
-    // console.log('copyMonth ? ', copyMonth);
-    let selectedMonth = moment(copyMonth).set('month', monthNum);
-    // console.log('selectedMonth ? ', selectedMonth);
-    setCurrentMonth(selectedMonth);
-  };
-
   useEffect(() => {
+    const todayDate = currentMonth.format('YYYY-MM');
     console.log('1. requestHealthLog 호출');
-    console.log('action ? ', requestHealthLog(monthNum + 1));
-    dispatch(requestHealthLog(monthNum + 1));
-  }, []); // componentDidMount와 같은 역할
+    dispatch(requestHealthLog(todayDate));
+  }, [currentMonth]); // componentDidMount와 같은 역할
+
+  const blankMaker = useCallback(() => {
+    let blank = [];
+    for (let i = 0; i < firstDayMonth; i++) {
+      // 이번달이 시작되는 첫 날짜의 요일 전까지 공백처리
+      blank.push(
+        <span className="prev-month-day" key={`blank${i}`}>
+          {''}
+        </span>
+      );
+    }
+    return blank;
+  }, [currentMonth]);
+
+  const dayInMonthMaker = useCallback(() => {
+    console.log('달력 헬스로그 ? ', healthLog);
+    let dayInMonth = [];
+    for (let d = 1; d <= daysInMonth; d++) {
+      // 해당하는 달에만 체크가 되야함.(해결전)
+      let isHealth;
+      if (healthLog) {
+        isHealth = healthLog.includes(d) ? 'selected' : '';
+      } else {
+        isHealth = '';
+      }
+      dayInMonth.push(
+        <span key={`healthDay${d}`} className={isHealth}>
+          {d}
+        </span>
+      );
+    }
+    return dayInMonth;
+  }, [healthLog]);
+
+  const setMonth = useCallback(
+    (buttonType) => {
+      monthNum = buttonType === 'prev' ? monthNum - 1 : monthNum + 1;
+      let copyMonth = Object.assign({}, currentMonth);
+      let selectedMonth = moment(copyMonth).set('month', monthNum);
+      setCurrentMonth(selectedMonth);
+    },
+    [currentMonth]
+  );
 
   return (
     <CalendarWrap>
@@ -82,8 +90,8 @@ const MainCalendar = () => {
           ))}
         </div>
         <div className="day">
-          {blank.map((item) => item)}
-          {dayInMonth.map((day) => day)}
+          {blankMaker().map((item) => item)}
+          {dayInMonthMaker().map((day) => day)}
         </div>
       </div>
     </CalendarWrap>

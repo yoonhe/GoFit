@@ -7,7 +7,6 @@ import {
 } from '../reducers/dayLog';
 import axios from 'axios';
 import moment from 'moment';
-
 const ROOT_URL = 'http://localhost:7777/';
 const TEST_URL = 'TEST';
 

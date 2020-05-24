@@ -4,9 +4,11 @@ import user from './user';
 import video from './video';
 import daylog from './daylog';
 import calendar from './calendar';
+import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:7777/api';
 
 export default function* rootSaga() {
-	yield all([fork(calendar), fork(video), fork(user), fork(daylog)]);
+  yield all([fork(calendar), fork(video), fork(user), fork(daylog)]);
 }
 
 // export default function* rootSaga() {
