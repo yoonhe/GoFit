@@ -14,7 +14,19 @@ export const MainVideoWrap = styled.div`
   & .video-item-wrap.on {
     display: block;
   }
-  & .video-item & .video-item.complete {
+  & .video-item {
+    animation: fadeInOut 1s;
+    @keyframes fadeInOut {
+      0% {
+        opacity: 0.3;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+  }
+  & .video-item.complete {
     position: relative;
   }
   & .video-item.complete:after {
