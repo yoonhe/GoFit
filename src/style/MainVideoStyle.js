@@ -56,11 +56,8 @@ export const MainVideoWrap = styled.div`
   }
 
   & .video-index-button {
-    position: absolute;
-    left: 0;
-    bottom: 120px;
     padding: 0;
-    margin: 0;
+    margin-top: 20px;
     width: 100%;
     text-align: center;
   }
@@ -69,18 +66,16 @@ export const MainVideoWrap = styled.div`
     width: 20px;
     height: 20px;
     background: #fff;
-    border: 1px solid #fff;
-    box-shadow: 1px 1px 10px rgba(0, 0, 0.1);
+    border: 1px solid #dcdcdc;
     border-radius: 50%;
     text-indent: -999999rem;
     cursor: pointer;
     transition: 0.2s linear;
     vertical-align: middle;
-    opacity: 0.5;
   }
   & .video-index-button li:hover,
   & .video-index-button li.on {
-    opacity: 1;
+    background: skyblue;
   }
   & .video-index-button li + li {
     margin-left: 20px;
@@ -138,5 +133,44 @@ export const SelectVideoTitle = styled.div`
     background: #eee;
     color: #999;
     cursor: not-allowed;
+  }
+`;
+
+export const Popup = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.3);
+
+  & > .inner {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  & > .inner > div {
+    padding: 20px 100px 20px 20px;
+    height: 100%;
+    overflow-y: scroll;
+  }
+
+  & .inner > button {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: skyblue;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
   }
 `;
