@@ -7,7 +7,7 @@ const VideoItem = ({ video, thumbnail, title }) => {
   const handleSelect = () => {
     //선택한 아이템을 selectedVideo로 담아줌
     dispatch(selectVideo(video));
-    //선택한 아이템의 contentDetails를 호출하고 정보를 selectedDetails에 담아줌
+    //선택한 아이템의 contentDetails를 호출하고 정보를 selectedDetails에 담아줌.
     dispatch(loadVideoDetails(video));
   };
 

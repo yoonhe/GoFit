@@ -15,14 +15,17 @@ export const loadVideo = searchTerm => ({
   type: LOAD_VIDEO,
   searchTerm
 });
+
 export const loadVideoSuccess = videos => ({
   type: LOAD_VIDEO_SUCCESS,
   videos
 });
+
 export const selectVideo = selected => ({
   type: SELECT_VIDEO,
   selected
 });
+
 export const loadVideoDetails = selected => ({
   type: LOAD_VIDEO_DETAILS,
   selected
