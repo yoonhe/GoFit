@@ -3,7 +3,8 @@ import produce from 'immer';
 
 const initialState = {
   videos: [],
-  selectedVideo: [],
+  selectedVideo: null,
+  selectedDetails: null,
   videoList: [],
   isEdit: false,
 };
@@ -11,23 +12,32 @@ const initialState = {
 export const LOAD_VIDEO = 'LOAD_VIDEO';
 export const SELECT_VIDEO = 'SELECT_VIDEO';
 export const LOAD_VIDEO_SUCCESS = 'LOAD_VIDEO_SUCCESS';
+export const LOAD_VIDEO_DETAILS = 'LOAD_VIDEO_DETAILS';
 export const ADD_VIDEO = 'ADD_VIDEO';
 export const EDIT_VIDEO = 'EDIT_VIDEO';
 export const START_EDIT_MODE = 'START_EDIT_MODE';
 export const END_EDIT_MODE = 'END_EDIT_MODE';
 
+
 // action creators(액션 메서드). 액션객체를 리턴함
-export const loadVideo = (searchTerm) => ({
+export const loadVideo = searchTerm => ({
   type: LOAD_VIDEO,
-  searchTerm,
+  searchTerm
 });
-export const loadVideoSuccess = (videos) => ({
+
+export const loadVideoSuccess = videos => ({
   type: LOAD_VIDEO_SUCCESS,
-  videos,
+  videos
 });
-export const selectVideo = (selected) => ({
+
+export const selectVideo = selected => ({
   type: SELECT_VIDEO,
-  selected,
+  selected
+});
+
+export const loadVideoDetails = selected => ({
+  type: LOAD_VIDEO_DETAILS,
+  selected
 });
 
 //액션을 받아서 새로운 상태를 반환함.
@@ -35,21 +45,28 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_VIDEO: {
       return {
-        ...state,
+        ...state
       };
     }
     case LOAD_VIDEO_SUCCESS: {
       console.log('action.data :', action.data);
       return {
         ...state,
-        videos: action.data,
+        videos: action.data
       };
     }
     case SELECT_VIDEO: {
       console.log('action.selected :', action.selected);
       return {
         ...state,
-        selectedVideo: action.selected,
+        selectedVideo: action.selected
+      };
+    }
+    case LOAD_VIDEO_DETAILS: {
+      console.log('선택 영상 디테일 :', action.data);
+      return {
+        ...state,
+        selectedDetails: action.data
       };
     }
     case ADD_VIDEO: {
