@@ -7,7 +7,7 @@ import {
 } from '../reducers/dayLog';
 import axios from 'axios';
 import moment from 'moment';
-const ROOT_URL = 'http://localhost:7777/';
+const ROOT_URL = 'http://localhost:7777/api/daylog/daylog/';
 const TEST_URL = 'TEST';
 
 const daylogSample = [
@@ -42,11 +42,15 @@ const daylogSample = [
 
 function getDaylogAPI() {
 	console.log('get DAYLOG API CALLED!');
-	/* 	const month = moment().format('YYYY-MM');
-	const getURL = ROOT_URL + 'api/daylog/' + month;
-	console.log('get URL Momth', getURL); */
+	/* 	const today = moment().format('YYYY-MM-DD');
+	const getURL = ROOT_URL + today;
+    console.log('get URL Momth', getURL); */
+	return axios.get(ROOT_URL).then((res) => {
+		console.log('axios get data', res);
+		return res;
+	});
 	//return axios.get(ROOT_URL/daylog)
-	return daylogSample;
+	//return daylogSample;
 }
 
 function* fetchDaylog() {
@@ -55,7 +59,7 @@ function* fetchDaylog() {
 		console.log('Saga daylogs???', daylogs);
 		yield put({
 			type: GET_DAYLOG,
-			daylogs: daylogs,
+			daylogs: daylogs.data,
 		});
 	} catch (e) {
 		console.log('fetch Daylogs Error: ', e.message);
@@ -67,10 +71,22 @@ function* watchFetchDaylog() {
 }
 
 function postDaylogAPI(data) {
+	//message, youtubeTitle, youtubeTime, url, weight, water
 	console.log('post DAYLOG API CALLED!');
 	console.log('data??', data);
-	//return axios.post(ROOT_URL+'/daylog', data)
-	return 'sent!';
+	//youtube time - select video 의 detail 정보 받으면 전송
+	const sendData = {
+		message: data.message,
+		youtubeTitle: data.selectVideo.snippet.title,
+		youtubeTime: '00:18:00',
+		url: data.selectVideo.id.videoId,
+		weight: data.weight,
+		water: data.waterArr.length,
+	};
+	return axios.post(ROOT_URL, sendData).then((res) => {
+		console.log('res', res);
+		return data;
+	});
 }
 
 function* postDaylog(data) {
@@ -78,6 +94,7 @@ function* postDaylog(data) {
 	try {
 		yield call(postDaylogAPI, data.newDaylog);
 		yield put({ type: POST_DAYLOG });
+		yield put({ type: LOAD_DAYLOG });
 	} catch (e) {
 		console.log('post Daylog Error: ', e.message);
 	}
