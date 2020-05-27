@@ -6,11 +6,12 @@ import waterImg from '../../water_icon3.jpg';
 import axios from 'axios';
 import moment from 'moment';
 
-axios.defaults.withCredentials = true;
+//axios.defaults.withCredentials = true;
 
 const DaylogInput = (props) => {
 	let [values, setValues] = useState({});
 	const dispatch = useDispatch();
+	const selectVideo = useSelector((state) => state.video.selectedVideo);
 
 	const handleInputTextChange = (e) => {
 		const { name, value } = e.target;
@@ -19,17 +20,17 @@ const DaylogInput = (props) => {
 	const handleWaterclick = (e) => {
 		const { name } = e.target;
 		if (name === 'waterAdd') {
-			if (values.water !== undefined) {
-				let newWaterValue = values.water;
-				newWaterValue.push(values.water.length + 1);
-				setValues({ ...values, water: newWaterValue });
+			if (values.waterArr !== undefined) {
+				let newWaterValue = values.waterArr;
+				newWaterValue.push(values.waterArr.length + 1);
+				setValues({ ...values, waterArr: newWaterValue });
 			} else {
-				setValues({ ...values, water: [1] });
+				setValues({ ...values, waterArr: [1] });
 			}
 		} else {
-			let newWaterValue = values.water;
+			let newWaterValue = values.waterArr;
 			newWaterValue.pop();
-			setValues({ ...values, water: newWaterValue });
+			setValues({ ...values, waterArr: newWaterValue });
 		}
 	};
 	const handleOK = () => {
@@ -37,10 +38,11 @@ const DaylogInput = (props) => {
 		console.log(values);
 		const today = moment().format('YYYY-MM-DD');
 		console.log('today', today);
+		const data = { ...values, selectVideo };
 		// redux 에 있는 userid, youtube.title, youtube.time 정보를 전달 필요
 		// data: {userid, message, weight, youtube.title, youtube.time, youtube.url 등 selectVideo 전체}
 		// axios.post('localhost:7777', data)
-		dispatch(daylogAction.postDaylog(values));
+		dispatch(daylogAction.postDaylog(data));
 	};
 	const handleTagAdd = (e) => {
 		if (e.key === 'Enter') {
@@ -80,8 +82,8 @@ const DaylogInput = (props) => {
 						onClick={handleWaterclick}
 					/>
 					+300ml
-					{values.water ? (
-						values.water.map((el) => {
+					{values.waterArr ? (
+						values.waterArr.map((el) => {
 							return (
 								<img
 									src={waterImg}

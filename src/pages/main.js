@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import MainVideo from '../components/MainVideo';
-
+import SearchPopup from '../components/SearchPopup';
 import MainCalendar from '../components/Calendar';
 
 import DaylogInput from '../components/DaylogInput';
@@ -17,34 +17,34 @@ const Main = (props) => {
 	const daylogs = useSelector((state) => state.dayLog.daylogs);
 	const isLogin = useSelector((state) => state.user.isLogin);
 	const dispatch = useDispatch();
-  
+
 	useEffect(() => {
 		dispatch(daylogAction.fetchDaylog());
 	}, []);
-  
+
 	if (!isLogin) {
 		return <Redirect to="/login" />;
 	}
-  
+
 	const handleLogout = () => {
 		console.log('logout clicked');
 		dispatch(loginAction.postlogout());
 	};
-  
+
 	return (
-    <MainWrap>
-      <MainTopWrap>
-        <MainVideo />
-        <MainCalendar />
-      </MainTopWrap>
-      <div>
+		<MainWrap>
+			<MainTopWrap>
+				<MainVideo />
+				<MainCalendar />
+			</MainTopWrap>
+			<div>
 				<DaylogInput />
 			</div>
 			<div>
 				<DaylogList daylogs={daylogs} />
 			</div>
 			<div onClick={handleLogout}> LOGOUT </div>
-    </MainWrap>
+		</MainWrap>
 	);
 };
 
