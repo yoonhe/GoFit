@@ -1,13 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import YouTube from 'react-youtube';
-import { SelectVideoTitle } from '../style/MainVideoStyle';
+import {
+  SelectVideoTitle,
+  SelectedVideoButton,
+  Popup,
+} from '../style/MainVideoStyle';
 import { useSelector, useDispatch } from 'react-redux';
+import SearchPopup from './SearchPopup';
+import {
+  ADD_VIDEO,
+  EDIT_VIDEO,
+  START_EDIT_MODE,
+  END_EDIT_MODE,
+} from '../reducers/video';
 
-const MainVideoItem = ({ videoData, className }) => {
+const MainVideoItem = ({ videoData, className, index }) => {
+  console.log('videoData ? ', videoData, 'className ? ', className);
   const dispatch = useDispatch();
-  console.log('videoData ? ', videoData);
+  const { selectedVideo, isEdit } = useSelector((store) => store.video);
   const [isWatchedVideo, setIsWatchedVideo] = useState(false); // 동영상을 봤는지 안봤는지
   const [playerState, setPlayerState] = useState('unstarted');
+  const [showSelectedVideoPopup, setShowSelectedVideoPopup] = useState(false);
+  // const [isSelectedVideoData, setIsSelectedVideoData] = useState([]); // 선택된 동영상이 있는지 없는지
   const videoOptions = {
     height: '600',
     playerVars: {
@@ -19,6 +33,26 @@ const MainVideoItem = ({ videoData, className }) => {
     console.log('비디오재생');
     setIsWatchedVideo(true);
   };
+  const showPopup = useCallback(() => {
+    setShowSelectedVideoPopup(true);
+  }, []);
+  const clickSearchPopupOkBtn = useCallback(() => {
+    console.log('selectedVideo ? ', selectedVideo);
+    if (!isEdit) {
+      dispatch({
+        type: ADD_VIDEO,
+        selectVideo: selectedVideo,
+      });
+    } else {
+      dispatch({
+        type: EDIT_VIDEO,
+        selectVideo: selectedVideo,
+        editVideoIndex: index,
+      });
+    }
+    dispatch({ type: END_EDIT_MODE });
+    setShowSelectedVideoPopup(false);
+  }, [selectedVideo]);
 
   const changePlayerStateShow = (playerStatus) => {
     // 유투브 플레이어 스테이츠 테스트중
@@ -43,24 +77,45 @@ const MainVideoItem = ({ videoData, className }) => {
 
   return (
     <div className={`video-item-wrap ${className}`}>
-      <div
-        className={
-          playerState === 'ended' ? 'video-item complete' : 'video-item'
-        }
-      >
-        <YouTube
-          videoId={videoData.videoId}
-          opts={videoOptions}
-          onStateChange={changePlayerStateShow}
-        />
-      </div>
+      <button onClick={showPopup}>비디오 추가버튼</button>
+      {!videoData ? (
+        <SelectedVideoButton onClick={showPopup}></SelectedVideoButton>
+      ) : (
+        <div
+          className={
+            playerState === 'ended' ? 'video-item complete' : 'video-item'
+          }
+        >
+          <YouTube
+            videoId={videoData.id.videoId}
+            opts={videoOptions}
+            onStateChange={changePlayerStateShow}
+          />
+        </div>
+      )}
       {!videoData ? (
         <SelectVideoTitle>선택된 영상이 없습니다.</SelectVideoTitle>
       ) : (
         <SelectVideoTitle>
-          <button disabled={isWatchedVideo}>수정</button>
-          {videoData.videoTitle}
+          <button
+            disabled={isWatchedVideo}
+            onClick={() => {
+              showPopup();
+              dispatch({ type: START_EDIT_MODE });
+            }}
+          >
+            수정
+          </button>
+          {videoData.snippet.title}
         </SelectVideoTitle>
+      )}
+      {showSelectedVideoPopup && (
+        <Popup>
+          <div className="inner">
+            <SearchPopup />
+            <button onClick={clickSearchPopupOkBtn}>확인</button>
+          </div>
+        </Popup>
       )}
     </div>
   );
