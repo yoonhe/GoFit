@@ -12,7 +12,9 @@ import {
   EDIT_VIDEO,
   START_EDIT_MODE,
   END_EDIT_MODE,
+  REMOVE_SELECTED_VIDEO,
 } from '../reducers/video';
+import DaylogInput from './DaylogInput';
 
 const MainVideoItem = ({ videoData, className, index }) => {
   console.log('videoData ? ', videoData, 'className ? ', className);
@@ -37,13 +39,12 @@ const MainVideoItem = ({ videoData, className, index }) => {
     setShowSelectedVideoPopup(true);
   }, []);
   const clickSearchPopupOkBtn = useCallback(() => {
-    console.log('selectedVideo ? ', selectedVideo);
-    if (!isEdit) {
+    if (selectedVideo && !isEdit) {
       dispatch({
         type: ADD_VIDEO,
         selectVideo: selectedVideo,
       });
-    } else {
+    } else if (selectedVideo) {
       dispatch({
         type: EDIT_VIDEO,
         selectVideo: selectedVideo,
@@ -51,6 +52,7 @@ const MainVideoItem = ({ videoData, className, index }) => {
       });
     }
     dispatch({ type: END_EDIT_MODE });
+    dispatch({ type: REMOVE_SELECTED_VIDEO });
     setShowSelectedVideoPopup(false);
   }, [selectedVideo]);
 

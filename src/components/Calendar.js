@@ -21,8 +21,8 @@ const MainCalendar = () => {
   // const currentDate = currentMonth.get('date');
   // const currentDay = currentMonth.format('D'); // D : 날짜, d : 요일
 
+  const todayDate = currentMonth.format('YYYY-MM');
   useEffect(() => {
-    const todayDate = currentMonth.format('YYYY-MM');
     console.log('1. requestHealthLog 호출');
     dispatch(requestHealthLog(todayDate));
   }, [currentMonth]); // componentDidMount와 같은 역할
@@ -65,6 +65,7 @@ const MainCalendar = () => {
       monthNum = buttonType === 'prev' ? monthNum - 1 : monthNum + 1;
       let copyMonth = Object.assign({}, currentMonth);
       let selectedMonth = moment(copyMonth).set('month', monthNum);
+      dispatch(requestHealthLog(todayDate));
       setCurrentMonth(selectedMonth);
     },
     [currentMonth]

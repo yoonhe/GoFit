@@ -13,7 +13,7 @@ const VideoItem = ({ video, thumbnail, title }) => {
 
   return (
     <div>
-      <input type='radio' name='select-item' onChange={handleSelect} />
+      <input type="radio" name="select-item" onChange={handleSelect} />
       <img src={thumbnail} />
       <div>{title.slice(0, 24).concat('...')}</div>
     </div>
