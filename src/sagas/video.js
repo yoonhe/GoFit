@@ -2,7 +2,9 @@ import { call, all, fork, takeEvery, put } from 'redux-saga/effects';
 import {
   LOAD_VIDEO,
   LOAD_VIDEO_SUCCESS,
-  LOAD_VIDEO_DETAILS
+  LOAD_VIDEO_DETAILS,
+  REQUEST_VIDEO_LIST,
+  SUCCESS_VIDEO_LIST,
 } from '../reducers/video';
 import axios from 'axios';
 import { YOUTUBE_API_KEY } from '../youtubeKey';
@@ -10,7 +12,7 @@ import { YOUTUBE_API_KEY } from '../youtubeKey';
 //.create() 메서드는 사용자가 정의한 구성으로 axios 인스턴스를 생성할 수 있음
 export const fetchYoutube = axios.create({
   baseURL: 'https://www.googleapis.com/youtube/v3',
-  withCredentials: false // <== 요 줄만 추가
+  withCredentials: false, // <== 요 줄만 추가
 });
 
 function fetchApiData(searchTerm) {
@@ -21,10 +23,10 @@ function fetchApiData(searchTerm) {
         part: 'snippet',
         maxResults: 6,
         key: YOUTUBE_API_KEY,
-        q: searchTerm.searchTerm
-      }
+        q: searchTerm.searchTerm,
+      },
     })
-    .then(res => {
+    .then((res) => {
       // console.log('res.data', res.data);
       const result = res.data.items;
       return result;
@@ -40,10 +42,10 @@ function fetchDataDetails(selected) {
         part: 'contentDetails',
         maxResults: 1,
         key: YOUTUBE_API_KEY,
-        id: selected.selected.id.videoId
-      }
+        id: selected.selected.id.videoId,
+      },
     })
-    .then(res => {
+    .then((res) => {
       console.log('res.data.items', res.data.items);
       const result = res.data.items[0];
       return result;
@@ -77,6 +79,28 @@ export function* watchLoadDetails() {
   yield takeEvery(LOAD_VIDEO_DETAILS, loadDetails);
 }
 
+function requestVideoListApi() {
+  return axios.get('/video');
+}
+function* requestVideoList() {
+  console.log('requestVideoList 실행 ');
+  try {
+    let videoList = yield requestVideoListApi();
+    console.log('videoList ? ', videoList.data);
+    yield put({ type: SUCCESS_VIDEO_LIST, videoList: videoList.data });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function* watchRequestVideoList() {
+  yield takeEvery(REQUEST_VIDEO_LIST, requestVideoList);
+}
+
 export default function* videoSaga() {
-  yield all([fork(watchLoadVideos), fork(watchLoadDetails)]); // fork => 함수 비동기적 호출
+  yield all([
+    fork(watchLoadVideos),
+    fork(watchLoadDetails),
+    fork(watchRequestVideoList),
+  ]); // fork => 함수 비동기적 호출
 }

@@ -13,6 +13,8 @@ export const LOAD_VIDEO = 'LOAD_VIDEO';
 export const SELECT_VIDEO = 'SELECT_VIDEO';
 export const LOAD_VIDEO_SUCCESS = 'LOAD_VIDEO_SUCCESS';
 export const LOAD_VIDEO_DETAILS = 'LOAD_VIDEO_DETAILS';
+export const REQUEST_VIDEO_LIST = 'REQUEST_VIDEO_LIST';
+export const SUCCESS_VIDEO_LIST = 'SUCCESS_VIDEO_LIST';
 export const REMOVE_SELECTED_VIDEO = 'REMOVE_SELECTED_VIDEO';
 export const ADD_VIDEO = 'ADD_VIDEO';
 export const EDIT_VIDEO = 'EDIT_VIDEO';
@@ -92,6 +94,11 @@ const reducer = (state = initialState, action) => {
     case END_EDIT_MODE: {
       return produce(state, (draft) => {
         draft.isEdit = false;
+      });
+    }
+    case SUCCESS_VIDEO_LIST: {
+      return produce(state, (draft) => {
+        draft.videoList = action.videoList;
       });
     }
     default: {
