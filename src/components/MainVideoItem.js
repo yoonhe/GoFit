@@ -12,16 +12,22 @@ import {
   EDIT_VIDEO,
   START_EDIT_MODE,
   END_EDIT_MODE,
+  REMOVE_SELECTED_VIDEO,
 } from '../reducers/video';
+import DaylogInput from './DaylogInput';
 
 const MainVideoItem = ({ videoData, className, index }) => {
-  console.log('videoData ? ', videoData, 'className ? ', className);
   const dispatch = useDispatch();
   const { selectedVideo, isEdit } = useSelector((store) => store.video);
   const [isWatchedVideo, setIsWatchedVideo] = useState(false); // 동영상을 봤는지 안봤는지
   const [playerState, setPlayerState] = useState('unstarted');
   const [showSelectedVideoPopup, setShowSelectedVideoPopup] = useState(false);
   // const [isSelectedVideoData, setIsSelectedVideoData] = useState([]); // 선택된 동영상이 있는지 없는지
+  // const {  } = videoData.Videos;
+
+  console.log('videoData ? ', videoData);
+  // console.log('videoData data ? ', videoData["Videos.url"]);
+
   const videoOptions = {
     height: '600',
     playerVars: {
@@ -37,13 +43,12 @@ const MainVideoItem = ({ videoData, className, index }) => {
     setShowSelectedVideoPopup(true);
   }, []);
   const clickSearchPopupOkBtn = useCallback(() => {
-    console.log('selectedVideo ? ', selectedVideo);
-    if (!isEdit) {
+    if (selectedVideo && !isEdit) {
       dispatch({
         type: ADD_VIDEO,
         selectVideo: selectedVideo,
       });
-    } else {
+    } else if (selectedVideo) {
       dispatch({
         type: EDIT_VIDEO,
         selectVideo: selectedVideo,
@@ -51,6 +56,7 @@ const MainVideoItem = ({ videoData, className, index }) => {
       });
     }
     dispatch({ type: END_EDIT_MODE });
+    dispatch({ type: REMOVE_SELECTED_VIDEO });
     setShowSelectedVideoPopup(false);
   }, [selectedVideo]);
 
@@ -106,7 +112,7 @@ const MainVideoItem = ({ videoData, className, index }) => {
           >
             수정
           </button>
-          {videoData.snippet.title}
+          {videoData.Videos.youtubeTitle}
         </SelectVideoTitle>
       )}
       {showSelectedVideoPopup && (

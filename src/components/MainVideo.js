@@ -1,17 +1,18 @@
 // Main Video 컴포넌트
 import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { MainVideoWrap } from '../style/MainVideoStyle';
+import { REQUEST_VIDEO_LIST } from '../reducers/video';
 import {
   SelectedVideoButton,
   SelectVideoTitle,
   Popup,
 } from '../style/MainVideoStyle';
 import MainVideoItem from './MainVideoItem';
-import { useSelector } from 'react-redux';
 
 const MainVideo = () => {
   const { selectedVideo, videoList } = useSelector((store) => store.video);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [currentVideoIndex, setCurrentVideoIndex] = useState('0');
   const [NotCompleteVideos, setNotCompleteVideos] = useState([]);
 
@@ -19,7 +20,11 @@ const MainVideo = () => {
     setCurrentVideoIndex(e.target.innerText);
   }, []);
 
-  console.log('videoList[0]', videoList[0]);
+  useEffect(() => {
+    dispatch({
+      type: REQUEST_VIDEO_LIST,
+    });
+  }, []);
 
   return (
     <>
