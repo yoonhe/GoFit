@@ -38,9 +38,6 @@ const Main = (props) => {
 				<MainCalendar />
 			</MainTopWrap>
 			<div>
-				<DaylogInput />
-			</div>
-			<div>
 				<DaylogList daylogs={daylogs} />
 			</div>
 			<div onClick={handleLogout}> LOGOUT </div>
