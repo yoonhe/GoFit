@@ -1,12 +1,11 @@
 import React, { useMemo, Component } from 'react';
 import DaylogEntry from './DaylogEntry';
-import axios from 'axios';
-//axios.defaults.withCredentials = true;
+import { useDispatch, useSelector } from 'react-redux';
+import * as daylogAction from '../reducers/dayLog';
 
 const DaylogList = ({ daylogs }) => {
-	console.log('daylog list called');
-
-	const dayGroup = (daylogs) => {
+	const { selectDate, isSelectDate } = useSelector((state) => state.dayLog);
+	const dayGroup = (daylogs, selectDate) => {
 		console.log('daylog goup function called');
 		let newlogs = {};
 		daylogs.map((daylog) => {
@@ -22,14 +21,17 @@ const DaylogList = ({ daylogs }) => {
 				newlogs[daylogdate].push(daylog);
 			}
 		});
+		if (isSelectDate) newlogs = { selectDate: newlogs[selectDate] };
 		//console.log('newlogs', newlogs);
 		return newlogs;
 	};
-	const daylogsGroupByDate = dayGroup(daylogs);
+	const daylogsGroupByDate = dayGroup(daylogs, selectDate);
 	//console.log('props.daylogs ??', daylogs);
 	//날짜 나중 순 sorting -> object 로 만들때 자동으로 날짜 오름차순으로 만들어짐 출력은 반대이므로 reverse
 	const sortedDate = Object.keys(daylogsGroupByDate).reverse();
-
+	const handleBacktoDaylog = () => {
+		dispatch(daylogAction.unfilteredDaylog());
+	};
 	return (
 		<div>
 			<h3> Daylog List </h3>
@@ -41,6 +43,7 @@ const DaylogList = ({ daylogs }) => {
 							{daylogsGroupByDate[date].reverse().map((daylog) => (
 								<DaylogEntry daylog={daylog} />
 							))}
+							<span onClick={handleBacktoDaylog}> Back to Daylog </span>
 						</div>
 					);
 				})

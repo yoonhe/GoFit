@@ -4,49 +4,20 @@ import {
 	LOAD_DAYLOG,
 	POST_DAYLOG,
 	NEW_DAYLOG,
+	FILTER_TAG,
+	FILTER_TAG_SUCESS,
 } from '../reducers/dayLog';
 import axios from 'axios';
 import moment from 'moment';
-const ROOT_URL = 'http://localhost:7777/api/daylog/daylog/';
-const TEST_URL = 'TEST';
-
-const daylogSample = [
-	{
-		date: '2020-05-01',
-		message: 'workout at home!',
-		user_id: 1,
-		youtubeTitle:
-			'디저트가 자꾸자꾸 먹고 싶어, 다이어트가 힘들다면 이렇게 하세요 :) (5가지)',
-		youtubeTime: '8:01',
-		weight: 58,
-	},
-	{
-		date: '2020-05-01',
-		message: '허벅지 운동 화이팅',
-		user_id: 1,
-		youtubeTitle:
-			'🔥허벅지 안쪽살🔥빨리 빼려면 1달만 이 루틴 하세요(안벅지 제거/허벅지살)',
-		youtubeTime: '16:19',
-		weight: 58,
-	},
-	{
-		date: '2020-05-03',
-		message: '다시 허벅지 운동!!',
-		user_id: 1,
-		youtubeTitle:
-			'🔥허벅지 안쪽살🔥빨리 빼려면 1달만 이 루틴 하세요(안벅지 제거/허벅지살)',
-		youtubeTime: '16:19',
-		weight: 57,
-	},
-];
+const ROOT_URL = 'http://localhost:7777/api/daylog/';
 
 function getDaylogAPI() {
 	console.log('get DAYLOG API CALLED!');
 	/* 	const today = moment().format('YYYY-MM-DD');
 	const getURL = ROOT_URL + today;
     console.log('get URL Momth', getURL); */
-	return axios.get(ROOT_URL).then((res) => {
-		console.log('axios get data', res);
+	return axios.get(ROOT_URL + 'daylog').then((res) => {
+		//console.log('axios get data', res);
 		return res;
 	});
 	//return axios.get(ROOT_URL/daylog)
@@ -56,7 +27,7 @@ function getDaylogAPI() {
 function* fetchDaylog() {
 	try {
 		const daylogs = yield call(getDaylogAPI);
-		console.log('Saga daylogs???', daylogs);
+		//console.log('Saga daylogs???', daylogs);
 		yield put({
 			type: GET_DAYLOG,
 			daylogs: daylogs.data,
@@ -107,7 +78,7 @@ function youtubeTimeConvert(youtubetime) {
 function postDaylogAPI(data) {
 	//message, youtubeTitle, youtubeTime, url, weight, water
 	console.log('post DAYLOG API CALLED!');
-	console.log('data??', data);
+	//console.log('data??', data);
 	//youtube time - select video 의 detail 정보 받으면 전송
 	const water = data.waterArr ? data.waterArr.length : null;
 	const sendData = {
@@ -119,7 +90,7 @@ function postDaylogAPI(data) {
 		water: water,
 		tags: data.tags,
 	};
-	return axios.post(ROOT_URL, sendData).then((res) => {
+	return axios.post(ROOT_URL + 'daylog', sendData).then((res) => {
 		console.log('res', res);
 		//console.log('sendData.youtubeTime', sendData.youtubeTime);
 		return data;
@@ -127,7 +98,7 @@ function postDaylogAPI(data) {
 }
 
 function* postDaylog(data) {
-	console.log(NEW_DAYLOG, 'called, data is? ', data);
+	//console.log(NEW_DAYLOG, 'called, data is? ', data);
 	try {
 		yield call(postDaylogAPI, data.newDaylog);
 		yield put({ type: POST_DAYLOG });
@@ -140,7 +111,31 @@ function* postDaylog(data) {
 function* watchPostDaylog() {
 	yield takeEvery(NEW_DAYLOG, postDaylog);
 }
+function filterTagAPI(tagid) {
+	//console.log('filterTag API tagid????', tagid);
+	return axios.get(ROOT_URL + tagid).then((res) => {
+		console.log('filterTagAPI res', res.data);
+		return res.data;
+	});
+}
+
+function* filterDaylog(data) {
+	try {
+		const filtered = yield call(filterTagAPI, data.tagid);
+		yield put({ type: FILTER_TAG_SUCESS, filtered });
+	} catch (e) {
+		console.log('filter Tag error', e.message);
+	}
+}
+
+function* watchFilterDaylog() {
+	yield takeEvery(FILTER_TAG, filterDaylog);
+}
 
 export default function* daylogSaga() {
-	yield all([fork(watchFetchDaylog), fork(watchPostDaylog)]);
+	yield all([
+		fork(watchFetchDaylog),
+		fork(watchPostDaylog),
+		fork(watchFilterDaylog),
+	]);
 }

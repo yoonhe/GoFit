@@ -18,6 +18,7 @@ axios.defaults.withCredentials = true;
 const Main = (props) => {
 	const daylogs = useSelector((state) => state.dayLog.daylogs);
 	const { isLogin, user } = useSelector((state) => state.user);
+	const { filtered, isFiltered } = useSelector((state) => state.dayLog);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
@@ -32,16 +33,28 @@ const Main = (props) => {
 		console.log('logout clicked');
 		dispatch(loginAction.postlogout());
 	};
+	const handleBacktoDaylog = () => {
+		dispatch(daylogAction.unfilteredDaylog());
+	};
 
+	console.log('tag filtered', filtered);
 	return (
 		<MainWrap>
 			<MainTopWrap>
 				<MainVideo />
 				<MainCalendar />
 			</MainTopWrap>
-			<div>
-				<DaylogList daylogs={daylogs} />
-			</div>
+			{!isFiltered ? (
+				<div>
+					<DaylogList daylogs={daylogs} />
+				</div>
+			) : (
+				<div>
+					<h3> {"'" + filtered[0].Tags[0].name + "' Tag filtering ..."} </h3>
+					<span onClick={handleBacktoDaylog}> Back to Daylog </span>
+					<DaylogList daylogs={filtered} />
+				</div>
+			)}
 			<div onClick={handleLogout}> LOGOUT </div>
 		</MainWrap>
 	);
