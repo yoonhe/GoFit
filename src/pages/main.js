@@ -11,18 +11,20 @@ import * as loginAction from '../reducers/user';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { MainWrap, MainTopWrap } from '../style/Main';
+import { LOAD_USER_REQUEST } from '../reducers/user';
+
 axios.defaults.withCredentials = true;
 
 const Main = (props) => {
 	const daylogs = useSelector((state) => state.dayLog.daylogs);
-	const isLogin = useSelector((state) => state.user.isLogin);
+	const { isLogin, user } = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(daylogAction.fetchDaylog());
 	}, []);
 
-	if (!isLogin) {
+	if (user === null) {
 		return <Redirect to="/login" />;
 	}
 

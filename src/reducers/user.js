@@ -7,10 +7,13 @@ export const LOG_IN = 'LOG_IN';
 export const LOG_OUT = 'LOG_OUT';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAIL = 'LOAD_USER_FAIL';
 
 export const initialState = {
 	isLogin: false,
-	user: {},
+	user: null,
 };
 
 // Action
@@ -58,6 +61,24 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state,
 			};
+		}
+		case LOAD_USER_REQUEST: {
+			return {
+				...state,
+			}
+		}
+		case LOAD_USER_SUCCESS: {
+			return {
+				...state,
+				user: action.data,
+				isLogin: true,
+			}
+		}
+		case LOAD_USER_FAIL: {
+			return {
+				...state,
+				isLogin: false,
+			}
 		}
 	}
 };
