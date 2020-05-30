@@ -84,14 +84,15 @@ function requestVideoListApi() {
 }
 
 function requestDayVideoListApi(date) {
+  console.log('date ? ', date);
   return axios.get(`/video/${date}`);
 }
 function* requestVideoList(action) {
-  console.log('requestVideoList 실행 ');
+  console.log('requestVideoList 실행 ', action.data);
   try {
     let videoList = yield action.data
-      ? requestVideoListApi()
-      : requestDayVideoListApi(action.data);
+      ? requestDayVideoListApi(action.data)
+      : requestVideoListApi();
     console.log('videoList ? ', videoList.data);
     yield put({ type: VIDEO_LIST_SUCCESS, videoList: videoList.data });
   } catch (e) {
