@@ -22,7 +22,6 @@ const VideoItem = ({ video, thumbnail, title }) => {
 		dispatch(selectVideo(video));
 		//선택한 아이템의 contentDetails를 호출하고 정보를 selectedDetails에 담아줌.
 		dispatch(loadVideoDetails(video));
-		toggle();
 	};
 
 	return (

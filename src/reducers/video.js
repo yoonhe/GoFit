@@ -7,7 +7,7 @@ const initialState = {
 	selectedDetails: null,
 	videoList: [],
 	isEdit: false,
-	isVideoSelect: false //액션 추가
+	isVideoSelect: false //액션 추가.
 };
 // action type(명령어). 액션은 하나의 객체
 export const LOAD_VIDEO = 'LOAD_VIDEO';
