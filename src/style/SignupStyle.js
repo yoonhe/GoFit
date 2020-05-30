@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-export const LoginStyle = styled.div`
+export const SigninStyle = styled.div`
 	width: 320px;
 	height: 458px;
 	border: 1px solid #dcdcdc;
@@ -13,7 +13,6 @@ export const LoginStyle = styled.div`
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	box-sizing: border-box;
 	& input {
 		width: 240px;
 		height: 36px;
@@ -23,14 +22,14 @@ export const LoginStyle = styled.div`
 		padding: 8px;
 		margin-bottom: 8px;
 	}
-	& h1 {
+	& h3 {
 		display: inline-block;
 		font-family: 'Roboto', sans-serif;
 		font-weight: 700;
 		text-align: center;
-		font-size: 32px;
+		font-size: 22px;
 	}
-	& h1 span {
+	& h3 span {
 		background: linear-gradient(to right, #ff416c, #ff4b2b);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
@@ -48,9 +47,12 @@ export const LoginStyle = styled.div`
 	&. text {
 		text-align: left;
 	}
+	& h6 {
+		color: tomato;
+	}
 `;
 
-export const GoSignup = styled.div`
+export const GoSignin = styled.div`
 	width: 240px;
 	height: 36px;
 	background: white;
@@ -60,4 +62,16 @@ export const GoSignup = styled.div`
 	margin-top: 8px;
 	margin-bottom: 16px;
 	text-align: center;
+`;
+
+export const BodyInfo = styled.div`
+	color: gray;
+	& input {
+		width: 212px;
+		height: 36px;
+		margin-right: 9px;
+	}
+	& text {
+		width: 20px;
+	}
 `;
