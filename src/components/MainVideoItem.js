@@ -30,7 +30,6 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
 
   // console.log('videoData ? ', videoData['Videos.url']);
   // console.log를 찍으면 오류나는 이유 찾는중..
-
   const videoOptions = {
     height: '600',
     playerVars: {
@@ -84,7 +83,8 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
       onPlayerReady();
     } else if (playerStatus.data === -0) {
       setPlayerState('ended'); // ended
-      alert('운동끝났습니다! 데이로그를 작성해야 달력에 체크표시가 됩니다!');
+      // alert('운동끝났습니다! 데이로그를 작성해야 달력에 체크표시가 됩니다!');
+      showDaylogInputPopupOpen();
     } else if (playerStatus.data === 1) {
       setPlayerState('playing'); // playing
     } else if (playerStatus.data === 2) {
@@ -112,11 +112,16 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
       ) : (
         <div
           className={
-            playerState === 'ended' ? 'video-item complete' : 'video-item'
+            playerState === 'ended' || videoData['Videos.id']
+              ? 'video-item complete'
+              : 'video-item'
           }
         >
           {videoList.length < 3 && videoList.length === index + 1 && (
-            <VideoAddBtn onClick={showPopup} isShow={playerState === 'ended'}>
+            <VideoAddBtn
+              onClick={showPopup}
+              isShow={playerState === 'ended' || videoData['Videos.id']}
+            >
               <button>+</button>
             </VideoAddBtn>
           )}
@@ -132,7 +137,7 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
       ) : (
         <SelectVideoTitle>
           <button
-            disabled={isWatchedVideo}
+            disabled={isWatchedVideo || videoData['Videos.id']}
             onClick={() => {
               showPopup();
               dispatch({ type: START_EDIT_MODE });
@@ -151,7 +156,7 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
           </div>
         </Popup>
       )}
-      <button onClick={showDaylogInputPopupOpen}>Daylog 추가버튼</button>
+      {/* <button onClick={showDaylogInputPopupOpen}>Daylog 추가버튼</button> */}
       {showDaylogInputPopup && (
         <Popup>
           <div className="inner">

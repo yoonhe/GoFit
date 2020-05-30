@@ -108,7 +108,7 @@ export const MainVideoWrap = styled.div`
   }
   & .video-index-button li:hover,
   & .video-index-button li.on {
-    background: skyblue;
+    background: tomato;
   }
   & .video-index-button li + li {
     margin-left: 20px;
