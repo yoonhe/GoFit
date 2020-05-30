@@ -22,16 +22,13 @@ const MainVideoItem = ({ videoData, className, index }) => {
   const [isWatchedVideo, setIsWatchedVideo] = useState(false); // 동영상을 봤는지 안봤는지
   const [playerState, setPlayerState] = useState('unstarted');
   const [showSelectedVideoPopup, setShowSelectedVideoPopup] = useState(false);
-  // const [isSelectedVideoData, setIsSelectedVideoData] = useState([]); // 선택된 동영상이 있는지 없는지
-  // const {  } = videoData.Videos;
 
-  console.log('videoData ? ', videoData);
-  // console.log('videoData data ? ', videoData["Videos.url"]);
+  // console.log('videoData ? ', videoData['Videos.url']);
+  // console.log를 찍으면 오류나는 이유 찾는중..
 
   const videoOptions = {
     height: '600',
     playerVars: {
-      // https://developers.google.com/youtube/player_parameters
       autoplay: 0, // 초기 브라우저 진입시 비디오 재생상태 => 0:정지, 1:재생
     },
   };
@@ -44,9 +41,23 @@ const MainVideoItem = ({ videoData, className, index }) => {
   }, []);
   const clickSearchPopupOkBtn = useCallback(() => {
     if (selectedVideo && !isEdit) {
+      let { videoId } = selectedVideo.id;
+      let { title } = selectedVideo.snippet;
+      let newSelectedVideo = {
+        'Videos.url': videoId,
+        'Videos.youtubeTitle': title,
+      };
+      console.log(
+        'newSelectedVideo ? ',
+        newSelectedVideo,
+        'videoId ? ',
+        videoId,
+        'title ? ',
+        title
+      );
       dispatch({
         type: ADD_VIDEO,
-        selectVideo: selectedVideo,
+        selectVideo: newSelectedVideo,
       });
     } else if (selectedVideo) {
       dispatch({
@@ -68,8 +79,6 @@ const MainVideoItem = ({ videoData, className, index }) => {
     } else if (playerStatus.data === -0) {
       setPlayerState('ended'); // ended
       alert('운동끝났습니다! 데이로그를 작성해야 달력에 체크표시가 됩니다!');
-      // 데이로그 컴포넌트 팝업 노출 시켜야함
-      // dispatch(markCalendar(Number(todayDate))); => 데이로그 작성 후 보낼예정
     } else if (playerStatus.data === 1) {
       setPlayerState('playing'); // playing
     } else if (playerStatus.data === 2) {
@@ -93,7 +102,7 @@ const MainVideoItem = ({ videoData, className, index }) => {
           }
         >
           <YouTube
-            videoId={videoData.id.videoId}
+            videoId={videoData['Videos.url']}
             opts={videoOptions}
             onStateChange={changePlayerStateShow}
           />
@@ -112,7 +121,7 @@ const MainVideoItem = ({ videoData, className, index }) => {
           >
             수정
           </button>
-          {videoData.Videos.youtubeTitle}
+          {videoData['Videos.youtubeTitle']}
         </SelectVideoTitle>
       )}
       {showSelectedVideoPopup && (
