@@ -3,6 +3,7 @@ import { CalendarWrap } from '../style/MainCalendar';
 import { useSelector, useDispatch } from 'react-redux';
 import moment from 'moment';
 import { requestHealthLog } from '../reducers/calendar';
+import { VIDEO_LIST_REQUEST } from '../reducers/video';
 
 const MainCalendar = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,16 @@ const MainCalendar = () => {
     return blank;
   }, [currentMonth]);
 
+  const calendarDayClickHandler = useCallback((e) => {
+    const clickDay = e.target.innerText;
+    let clickDayFormat =
+      e.target.innerText.length === 1 ? `0${clickDay}` : clickDay;
+    console.log('clickDayFormat ? ', clickDayFormat);
+    dispatch({
+      type: VIDEO_LIST_REQUEST,
+      data: `${todayDate}-${clickDayFormat}`,
+    });
+  });
   const dayInMonthMaker = useCallback(() => {
     console.log('달력 헬스로그 ? ', healthLog);
     let dayInMonth = [];
@@ -52,7 +63,11 @@ const MainCalendar = () => {
         isHealth = '';
       }
       dayInMonth.push(
-        <span key={`healthDay${d}`} className={isHealth}>
+        <span
+          onClick={calendarDayClickHandler}
+          key={`healthDay${d}`}
+          className={isHealth}
+        >
           {d}
         </span>
       );
