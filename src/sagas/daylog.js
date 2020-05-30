@@ -81,8 +81,9 @@ function postDaylogAPI(data) {
 	//console.log('data??', data);
 	//youtube time - select video 의 detail 정보 받으면 전송
 	const water = data.waterArr ? data.waterArr.length : null;
+	const message = data.message ? data.message : '운동 완료!';
 	const sendData = {
-		message: data.message,
+		message: message,
 		youtubeTitle: data.selectVideo.snippet.title,
 		youtubeTime: youtubeTimeConvert(data.youtubeTime),
 		url: data.selectVideo.id.videoId,
@@ -90,6 +91,7 @@ function postDaylogAPI(data) {
 		water: water,
 		tags: data.tags,
 	};
+	//console.log('sendData>>>>>>??', sendData);
 	return axios.post(ROOT_URL + 'daylog', sendData).then((res) => {
 		console.log('res', res);
 		//console.log('sendData.youtubeTime', sendData.youtubeTime);

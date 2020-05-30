@@ -37,7 +37,7 @@ const Main = (props) => {
 		dispatch(daylogAction.unfilteredDaylog());
 	};
 
-	console.log('tag filtered', filtered);
+	//console.log('tag filtered', filtered);
 	return (
 		<MainWrap>
 			<MainTopWrap>

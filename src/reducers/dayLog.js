@@ -12,8 +12,8 @@ export const SELECT_DATE = 'SELECT_DATE';
 const initialState = {
 	daylogs: [],
 	filtered: null,
-	selectDate: null,
-	isSelectDate: true,
+	selectedDate: null,
+	isSelectedDate: false,
 	isFiltered: false,
 };
 
@@ -44,7 +44,7 @@ export const unfilteredDaylog = () => {
 	};
 };
 
-export const selectDate = (date) => {
+export const selectDaylogDate = (date) => {
 	return {
 		type: SELECT_DATE,
 		date,
@@ -71,7 +71,7 @@ const reducer = (state = initialState, action) => {
 				...state,
 				filtered: action.filtered,
 				isFiltered: true,
-				isSelectDate: false,
+				isSelectedDate: false,
 			};
 		}
 		case UNFILTERED_TAG: {
@@ -79,15 +79,15 @@ const reducer = (state = initialState, action) => {
 				...state,
 				filtered: null,
 				isFiltered: false,
-				isSelectDate: false,
-				selectDate: null,
+				isSelectedDate: false,
+				selectedDate: null,
 			};
 		}
 		case SELECT_DATE: {
 			return {
 				...state,
-				selectDate: action.date,
-				isSelectDate: true,
+				selectedDate: action.date,
+				isSelectedDate: true,
 				isFiltered: false,
 			};
 		}

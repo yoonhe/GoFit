@@ -15,7 +15,7 @@ const DaylogEntry = ({ daylog }) => {
 		if (hour.toString().length === 1) hour = '0' + hour;
 		if (min.toString().length === 1) min = '0' + min;
 		if (sec.toString().length === 1) sec = '0' + sec;
-		console.log('youtube time', second, 'hour', hour, 'min', min, 'sec', sec);
+		//console.log('youtube time', second, 'hour', hour, 'min', min, 'sec', sec);
 		return hour + ':' + min + ':' + sec;
 	};
 	const log = {
@@ -27,21 +27,27 @@ const DaylogEntry = ({ daylog }) => {
 		tag: daylog.Tags,
 	};
 	//console.log('videoTitle', videoTitle, 'weight', weight);
-	//console.log('log.water',log.water,"daylog['Healthlog.water']",daylog['Healthlog.water']);
+	//console.log('log.water', log.water, daylog.Healthlog.water);
 	//console.log('get tag data', log.tag);
+
 	const filterTag = (e) => {
 		const name = e.target.className;
 		//console.log('e.target', e.target);
 		//console.log('tag clicked!', name);
 		dispatch(daylogAction.filterDaylogTag(name));
 	};
-
+	//water === 0 일때 배열 생성됨
+	log.water.pop();
 	return (
 		<div>
 			<h4> Daylog Entry </h4>
 			<div> YoutubeTitle: {log.videoTitle}</div>
 			<div> Message: {log.message}</div>
-			<div> Weight: {log.weight + ' kg'}</div>
+			{log.weight !== null ? (
+				<div>Weight: {' ' + log.weight + ' kg'} </div>
+			) : (
+				<div></div>
+			)}
 			<div> 운동 시간: {log.videoTime}</div>
 			{log.water ? (
 				log.water.map((el) => {
