@@ -4,6 +4,7 @@ import {
   SelectVideoTitle,
   SelectedVideoButton,
   Popup,
+  VideoAddBtn,
 } from '../style/MainVideoStyle';
 import { useSelector, useDispatch } from 'react-redux';
 import SearchPopup from './SearchPopup';
@@ -12,13 +13,14 @@ import {
   EDIT_VIDEO,
   START_EDIT_MODE,
   END_EDIT_MODE,
-  REMOVE_SELECTED_VIDEO,
 } from '../reducers/video';
 import DaylogInput from './DaylogInput';
 
-const MainVideoItem = ({ videoData, className, index }) => {
+const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
   const dispatch = useDispatch();
-  const { selectedVideo, isEdit } = useSelector((store) => store.video);
+  const { selectedVideo, isEdit, videoList } = useSelector(
+    (store) => store.video
+  );
   const [isWatchedVideo, setIsWatchedVideo] = useState(false); // 동영상을 봤는지 안봤는지
   const [playerState, setPlayerState] = useState('unstarted');
   const [showSelectedVideoPopup, setShowSelectedVideoPopup] = useState(false);
@@ -33,41 +35,42 @@ const MainVideoItem = ({ videoData, className, index }) => {
     },
   };
   const onPlayerReady = (e) => {
-    console.log('비디오재생');
     setIsWatchedVideo(true);
   };
   const showPopup = useCallback(() => {
     setShowSelectedVideoPopup(true);
   }, []);
+
+  const SelectedVideoData = useCallback(() => {
+    const { videoId } = selectedVideo && selectedVideo.id;
+    const { title } = selectedVideo && selectedVideo.snippet;
+    const newSelectedVideo = selectedVideo && {
+      'Videos.url': videoId,
+      'Videos.youtubeTitle': title,
+    };
+    return newSelectedVideo;
+  }, [selectedVideo]);
+
   const clickSearchPopupOkBtn = useCallback(() => {
     if (selectedVideo && !isEdit) {
-      let { videoId } = selectedVideo.id;
-      let { title } = selectedVideo.snippet;
-      let newSelectedVideo = {
-        'Videos.url': videoId,
-        'Videos.youtubeTitle': title,
-      };
-      console.log(
-        'newSelectedVideo ? ',
-        newSelectedVideo,
-        'videoId ? ',
-        videoId,
-        'title ? ',
-        title
-      );
       dispatch({
         type: ADD_VIDEO,
-        selectVideo: newSelectedVideo,
+        selectVideo: SelectedVideoData(),
       });
+      if (videoList && videoList.length - 1 === index) {
+        console.log('last index ? ', index);
+        changeVideoIndex(index + 1);
+      }
     } else if (selectedVideo) {
       dispatch({
         type: EDIT_VIDEO,
-        selectVideo: selectedVideo,
+        selectVideo: SelectedVideoData(),
         editVideoIndex: index,
       });
     }
+
     dispatch({ type: END_EDIT_MODE });
-    dispatch({ type: REMOVE_SELECTED_VIDEO });
+    // dispatch({ type: REMOVE_SELECTED_VIDEO });
     setShowSelectedVideoPopup(false);
   }, [selectedVideo]);
 
@@ -92,7 +95,6 @@ const MainVideoItem = ({ videoData, className, index }) => {
 
   return (
     <div className={`video-item-wrap ${className}`}>
-      <button onClick={showPopup}>비디오 추가버튼</button>
       {!videoData ? (
         <SelectedVideoButton onClick={showPopup}></SelectedVideoButton>
       ) : (
@@ -101,6 +103,11 @@ const MainVideoItem = ({ videoData, className, index }) => {
             playerState === 'ended' ? 'video-item complete' : 'video-item'
           }
         >
+          {videoList.length < 3 && videoList.length === index + 1 && (
+            <VideoAddBtn onClick={showPopup} isShow={playerState === 'ended'}>
+              <button>+</button>
+            </VideoAddBtn>
+          )}
           <YouTube
             videoId={videoData['Videos.url']}
             opts={videoOptions}
