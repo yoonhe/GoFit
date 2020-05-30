@@ -123,6 +123,9 @@ export const SelectedVideoButton = styled.button`
   box-sizing: border-box;
   cursor: pointer;
   background: none;
+  &:hover {
+    border-color: rgba(255, 99, 71, 0.5);
+  }
 
   &:after,
   &:before {
@@ -141,6 +144,10 @@ export const SelectedVideoButton = styled.button`
   &:before {
     width: 10px;
     height: 200px;
+  }
+  &:hover:after,
+  &:hover:before {
+    background: rgba(255, 99, 71, 0.5);
   }
 `;
 
