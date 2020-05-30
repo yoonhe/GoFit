@@ -3,18 +3,13 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MainVideoWrap } from '../style/MainVideoStyle';
 import { REQUEST_VIDEO_LIST } from '../reducers/video';
-import {
-  SelectedVideoButton,
-  SelectVideoTitle,
-  Popup,
-} from '../style/MainVideoStyle';
 import MainVideoItem from './MainVideoItem';
 
 const MainVideo = () => {
-  const { selectedVideo, videoList } = useSelector((store) => store.video);
+  const { videoList } = useSelector((store) => store.video);
   const dispatch = useDispatch();
   const [currentVideoIndex, setCurrentVideoIndex] = useState('0');
-  const [NotCompleteVideos, setNotCompleteVideos] = useState([]);
+  // const [NotCompleteVideos, setNotCompleteVideos] = useState([]);
 
   const clickVideoIndex = useCallback((e) => {
     setCurrentVideoIndex(e.target.innerText);
@@ -26,12 +21,14 @@ const MainVideo = () => {
     });
   }, []);
 
+  console.log('videoList ? ', videoList);
   return (
     <>
       <MainVideoWrap>
         {videoList.length < 2 ? (
           <MainVideoItem
             className={'on'}
+            // videoData={videoList[0]}
             videoData={videoList[0]}
             key={`video ${0}`}
             index={0}
