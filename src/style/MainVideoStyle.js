@@ -1,4 +1,24 @@
 import styled from 'styled-components';
+export const VideoAddBtn = styled.p`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  margin: 0;
+  padding: 10px;
+  cursor: pointer;
+  & button {
+    display: ${(props) => (props.isShow ? 'block' : 'none')};
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    background: tomato;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 30px;
+    z-index: 3;
+  }
+`;
 export const MainVideoWrap = styled.div`
   position: relative;
   width: 100%;
@@ -15,6 +35,7 @@ export const MainVideoWrap = styled.div`
     display: block;
   }
   & .video-item {
+    position: relative;
     animation: fadeInOut 1s;
     @keyframes fadeInOut {
       0% {
@@ -29,21 +50,33 @@ export const MainVideoWrap = styled.div`
   & .video-item.complete {
     position: relative;
   }
-  & .video-item.complete:after {
+  & .video-item.complete:before {
     position: absolute;
     top: 0;
     left: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: block;
     width: 100%;
     height: 100%;
-    background: skyblue;
-    font-size: 50px;
+    background: rgba(0, 0, 0, 0.5);
+    content: '';
+  }
+  & .video-item.complete:after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    line-height: 300px;
+    background: tomato;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 40px;
     color: #fff;
     opacity: 0.9;
     content: 'COMPLETE';
     cursor: not-allowed;
+    z-index: 2;
   }
 
   & .video-item,
@@ -146,6 +179,7 @@ export const Popup = styled.div`
   height: 100%;
   width: 100%;
   background: rgba(0, 0, 0, 0.3);
+  z-index: 9999;
 
   & > .inner {
     position: relative;
