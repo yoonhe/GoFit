@@ -1,5 +1,5 @@
 import { all, fork, call, put, takeEvery } from 'redux-saga/effects';
-import { LOG_IN, LOG_OUT, LOGIN_SUCCESS, LOGIN_FAIL } from '../reducers/user';
+import { LOG_IN, LOG_OUT, LOGIN_SUCCESS, LOGIN_FAIL, LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAIL } from '../reducers/user';
 import axios from 'axios';
 
 const testaccount = {
@@ -58,6 +58,34 @@ function* watchLogin() {
 	yield takeEvery(LOG_IN, login);
 }
 
+function loadUserAPI() {
+	return axios.get(`/user`, { withCredentials: true });
+}
+
+function* loadUser(action) {
+	try {
+		const result = yield call(loadUserAPI);
+		console.log(result.data)
+		yield put({
+			// put은 dispatch랑 동일
+			type: LOAD_USER_SUCCESS,
+			data: result.data
+		});
+	} catch (e) {
+		yield put({
+			type: LOAD_USER_FAIL,
+		})
+		console.error(e)
+	}
+}
+
+function* watchLoadUser() {
+	yield takeEvery(LOAD_USER_REQUEST, loadUser);
+}
+
 export default function* userSaga() {
-	yield all([fork(watchLogin)]); // fork => 함수 비동기적 호출
+	yield all([
+		fork(watchLogin),
+		fork(watchLoadUser),
+	]); // fork => 함수 비동기적 호출
 }
