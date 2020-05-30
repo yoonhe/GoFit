@@ -18,7 +18,7 @@ import {
 import * as daylogAction from '../reducers/dayLog';
 import DaylogInput from './DaylogInput';
 
-const MainVideoItem = ({ videoData, className, index }) => {
+const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
   const dispatch = useDispatch();
   const { selectedVideo, isEdit, videoList } = useSelector(
     (store) => store.video
@@ -56,33 +56,24 @@ const MainVideoItem = ({ videoData, className, index }) => {
 
   const clickSearchPopupOkBtn = useCallback(() => {
     if (selectedVideo && !isEdit) {
-      let { videoId } = selectedVideo.id;
-      let { title } = selectedVideo.snippet;
-      let newSelectedVideo = {
-        'Videos.url': videoId,
-        'Videos.youtubeTitle': title,
-      };
-      console.log(
-        'newSelectedVideo ? ',
-        newSelectedVideo,
-        'videoId ? ',
-        videoId,
-        'title ? ',
-        title
-      );
       dispatch({
         type: ADD_VIDEO,
-        selectVideo: newSelectedVideo,
+        selectVideo: SelectedVideoData(),
       });
+      if (videoList && videoList.length - 1 === index) {
+        console.log('last index ? ', index);
+        changeVideoIndex(index + 1);
+      }
     } else if (selectedVideo) {
       dispatch({
         type: EDIT_VIDEO,
-        selectVideo: selectedVideo,
+        selectVideo: SelectedVideoData(),
         editVideoIndex: index,
       });
     }
+
     dispatch({ type: END_EDIT_MODE });
-    //dispatch({ type: REMOVE_SELECTED_VIDEO });
+    // dispatch({ type: REMOVE_SELECTED_VIDEO });
     setShowSelectedVideoPopup(false);
   }, [selectedVideo]);
 
