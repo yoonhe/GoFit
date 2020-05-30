@@ -2,26 +2,33 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { MainVideoWrap } from '../style/MainVideoStyle';
-import { REQUEST_VIDEO_LIST } from '../reducers/video';
+import { VIDEO_LIST_REQUEST } from '../reducers/video';
 import MainVideoItem from './MainVideoItem';
 
 const MainVideo = () => {
   const { videoList } = useSelector((store) => store.video);
+  const lastVideoIndex = videoList.length && videoList.length - 1;
   const dispatch = useDispatch();
-  const [currentVideoIndex, setCurrentVideoIndex] = useState('0');
-  // const [NotCompleteVideos, setNotCompleteVideos] = useState([]);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(
+    `${lastVideoIndex}`
+  );
 
   const clickVideoIndex = useCallback((e) => {
     setCurrentVideoIndex(e.target.innerText);
   }, []);
 
+  const changeVideoIndex = useCallback((index) => {
+    console.log('changeVideoIndex 클릭됨 ? ', index);
+    setCurrentVideoIndex(index);
+  }, []);
+
   useEffect(() => {
     dispatch({
-      type: REQUEST_VIDEO_LIST,
+      type: VIDEO_LIST_REQUEST,
     });
   }, []);
 
-  console.log('videoList ? ', videoList);
+  console.log('currentVideoIndex ? ', currentVideoIndex);
   return (
     <>
       <MainVideoWrap>
@@ -32,6 +39,7 @@ const MainVideo = () => {
             videoData={videoList[0]}
             key={`video ${0}`}
             index={0}
+            changeVideoIndex={changeVideoIndex}
           />
         ) : (
           videoList.map((video, index) => {
@@ -41,6 +49,7 @@ const MainVideo = () => {
                 videoData={video}
                 key={`video ${index}`}
                 index={index}
+                changeVideoIndex={changeVideoIndex}
               />
             );
           })

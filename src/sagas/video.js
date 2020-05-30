@@ -3,8 +3,8 @@ import {
   LOAD_VIDEO,
   LOAD_VIDEO_SUCCESS,
   LOAD_VIDEO_DETAILS,
-  REQUEST_VIDEO_LIST,
-  SUCCESS_VIDEO_LIST,
+  VIDEO_LIST_REQUEST,
+  VIDEO_LIST_SUCCESS,
 } from '../reducers/video';
 import axios from 'axios';
 import { YOUTUBE_API_KEY } from '../youtubeKey';
@@ -82,19 +82,25 @@ export function* watchLoadDetails() {
 function requestVideoListApi() {
   return axios.get('/video');
 }
-function* requestVideoList() {
+
+function requestDayVideoListApi(date) {
+  return axios.get(`/video/${date}`);
+}
+function* requestVideoList(action) {
   console.log('requestVideoList 실행 ');
   try {
-    let videoList = yield requestVideoListApi();
+    let videoList = yield action.data
+      ? requestVideoListApi()
+      : requestDayVideoListApi(action.data);
     console.log('videoList ? ', videoList.data);
-    yield put({ type: SUCCESS_VIDEO_LIST, videoList: videoList.data });
+    yield put({ type: VIDEO_LIST_SUCCESS, videoList: videoList.data });
   } catch (e) {
     console.error(e);
   }
 }
 
 function* watchRequestVideoList() {
-  yield takeEvery(REQUEST_VIDEO_LIST, requestVideoList);
+  yield takeEvery(VIDEO_LIST_REQUEST, requestVideoList);
 }
 
 export default function* videoSaga() {
