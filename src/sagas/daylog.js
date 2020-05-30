@@ -70,21 +70,58 @@ function* watchFetchDaylog() {
 	yield takeEvery(LOAD_DAYLOG, fetchDaylog);
 }
 
+function youtubeTimeConvert(youtubetime) {
+	var hourRegex = new RegExp('[0-9]{1,2}H', 'gi');
+	var minRegex = new RegExp('[0-9]{1,2}M', 'gi');
+	var secRegex = new RegExp('[0-9]{1,2}S', 'gi');
+
+	var hour = hourRegex.exec(youtubetime);
+	var min = minRegex.exec(youtubetime);
+	var sec = secRegex.exec(youtubetime);
+
+	if (hour !== null) {
+		hour = hour.toString().split('H')[0] + ':';
+	} else {
+		hour = '00:';
+	}
+	if (min !== null) {
+		min = min.toString().split('M')[0] + ':';
+		if (min.length < 2) {
+			min = '0' + min + ':';
+		}
+	} else {
+		min = '00:';
+	}
+	if (sec !== null) {
+		sec = sec.toString().split('S')[0];
+		if (sec.length < 2) {
+			sec = '0' + sec;
+		}
+	} else {
+		sec = '00';
+	}
+	const duration = hour + min + sec;
+	return duration;
+}
+
 function postDaylogAPI(data) {
 	//message, youtubeTitle, youtubeTime, url, weight, water
 	console.log('post DAYLOG API CALLED!');
 	console.log('data??', data);
 	//youtube time - select video 의 detail 정보 받으면 전송
+	const water = data.waterArr ? data.waterArr.length : null;
 	const sendData = {
 		message: data.message,
 		youtubeTitle: data.selectVideo.snippet.title,
-		youtubeTime: '00:18:00',
+		youtubeTime: youtubeTimeConvert(data.youtubeTime),
 		url: data.selectVideo.id.videoId,
 		weight: data.weight,
-		water: data.waterArr.length,
+		water: water,
+		tags: data.tags,
 	};
 	return axios.post(ROOT_URL, sendData).then((res) => {
 		console.log('res', res);
+		//console.log('sendData.youtubeTime', sendData.youtubeTime);
 		return data;
 	});
 }

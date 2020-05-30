@@ -9,24 +9,27 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import SearchPopup from './SearchPopup';
 import {
-  ADD_VIDEO,
-  EDIT_VIDEO,
-  START_EDIT_MODE,
-  END_EDIT_MODE,
+	ADD_VIDEO,
+	EDIT_VIDEO,
+	START_EDIT_MODE,
+	END_EDIT_MODE,
+	REMOVE_SELECTED_VIDEO,
 } from '../reducers/video';
+import * as daylogAction from '../reducers/dayLog';
 import DaylogInput from './DaylogInput';
 
-const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
-  const dispatch = useDispatch();
-  const { selectedVideo, isEdit, videoList } = useSelector(
-    (store) => store.video
-  );
-  const [isWatchedVideo, setIsWatchedVideo] = useState(false); // 동영상을 봤는지 안봤는지
-  const [playerState, setPlayerState] = useState('unstarted');
-  const [showSelectedVideoPopup, setShowSelectedVideoPopup] = useState(false);
+const MainVideoItem = ({ videoData, className, index }) => {
+const dispatch = useDispatch();
+const { selectedVideo, isEdit, videoList } = useSelector(
+  (store) => store.video
+);
+const [isWatchedVideo, setIsWatchedVideo] = useState(false); // 동영상을 봤는지 안봤는지
+const [playerState, setPlayerState] = useState('unstarted');
+const [showSelectedVideoPopup, setShowSelectedVideoPopup] = useState(false);
+const [showDaylogInputPopup, setshowDaylogInputPopup] = useState(false);
 
-  // console.log('videoData ? ', videoData['Videos.url']);
-  // console.log를 찍으면 오류나는 이유 찾는중..
+// console.log('videoData ? ', videoData['Videos.url']);
+// console.log를 찍으면 오류나는 이유 찾는중..
 
   const videoOptions = {
     height: '600',
@@ -74,8 +77,41 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
     setShowSelectedVideoPopup(false);
   }, [selectedVideo]);
 
+
+	const clickSearchPopupOkBtn = useCallback(() => {
+		if (selectedVideo && !isEdit) {
+			let { videoId } = selectedVideo.id;
+			let { title } = selectedVideo.snippet;
+			let newSelectedVideo = {
+				'Videos.url': videoId,
+				'Videos.youtubeTitle': title,
+			};
+			console.log(
+				'newSelectedVideo ? ',
+				newSelectedVideo,
+				'videoId ? ',
+				videoId,
+				'title ? ',
+				title
+			);
+			dispatch({
+				type: ADD_VIDEO,
+				selectVideo: newSelectedVideo,
+			});
+		} else if (selectedVideo) {
+			dispatch({
+				type: EDIT_VIDEO,
+				selectVideo: selectedVideo,
+				editVideoIndex: index,
+			});
+		}
+		dispatch({ type: END_EDIT_MODE });
+		//dispatch({ type: REMOVE_SELECTED_VIDEO });
+		setShowSelectedVideoPopup(false);
+	}, [selectedVideo]);
+  
   const changePlayerStateShow = (playerStatus) => {
-    // 유투브 플레이어 스테이츠 테스트중
+    // 유투브 플레이어 스테이트 테스트중
     if (playerStatus.data === -(-1)) {
       setPlayerState('started');
       onPlayerReady();
@@ -92,7 +128,16 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
       setPlayerState('cued'); // cued
     }
   };
-
+  
+  const showDaylogInputPopupOpen = useCallback(() => {
+		setshowDaylogInputPopup(true);
+	}, []);
+	const showDaylogInputClosePopup = useCallback((data) => {
+		dispatch(daylogAction.postDaylog(data));
+		dispatch({ type: REMOVE_SELECTED_VIDEO });
+		setshowDaylogInputPopup(false);
+	}, []);
+  
   return (
     <div className={`video-item-wrap ${className}`}>
       {!videoData ? (
@@ -139,6 +184,16 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
           </div>
         </Popup>
       )}
+       <button onClick={showDaylogInputPopupOpen}>Daylog 추가버튼</button>
+			{showDaylogInputPopup && (
+				<Popup>
+					<div className="inner">
+						<DaylogInput
+							showDaylogInputClosePopup={showDaylogInputClosePopup}
+						/>
+					</div>
+				</Popup>
+			)}
     </div>
   );
 };

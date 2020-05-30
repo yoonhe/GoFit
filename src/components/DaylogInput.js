@@ -12,6 +12,7 @@ const DaylogInput = (props) => {
 	let [values, setValues] = useState({});
 	const dispatch = useDispatch();
 	const selectVideo = useSelector((state) => state.video.selectedVideo);
+	const selectedDetails = useSelector((state) => state.video.selectedDetails);
 
 	const handleInputTextChange = (e) => {
 		const { name, value } = e.target;
@@ -36,13 +37,20 @@ const DaylogInput = (props) => {
 	const handleOK = () => {
 		console.log('OK Clicked!');
 		console.log(values);
-		const today = moment().format('YYYY-MM-DD');
-		console.log('today', today);
-		const data = { ...values, selectVideo };
+		const youtubeTime = selectedDetails
+			? selectedDetails.contentDetails.duration
+			: null;
+		//console.log('youtubeTime', youtubeTime);
+		const data = {
+			...values,
+			selectVideo,
+			youtubeTime,
+		};
 		// redux 에 있는 userid, youtube.title, youtube.time 정보를 전달 필요
 		// data: {userid, message, weight, youtube.title, youtube.time, youtube.url 등 selectVideo 전체}
 		// axios.post('localhost:7777', data)
-		dispatch(daylogAction.postDaylog(data));
+		console.log('확인 send data', data);
+		props.showDaylogInputClosePopup(data);
 	};
 	const handleTagAdd = (e) => {
 		if (e.key === 'Enter') {

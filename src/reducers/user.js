@@ -7,10 +7,14 @@ export const LOG_IN = 'LOG_IN';
 export const LOG_OUT = 'LOG_OUT';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAIL = 'LOAD_USER_FAIL';
+export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
 
 export const initialState = {
 	isLogin: false,
-	user: {},
+	user: null,
 };
 
 // Action
@@ -23,6 +27,7 @@ export const postLogin = (data) => {
 	};
 };
 export const postlogout = () => {
+	console.log('post logout function');
 	return {
 		type: LOG_OUT,
 	};
@@ -34,7 +39,6 @@ const reducer = (state = initialState, action) => {
 	// action이 실행되면 reducer가 실행됨..!
 	switch (action.type) {
 		case LOGIN_SUCCESS: {
-			console.log('login success -> userinfo', action);
 			return {
 				...state,
 				isLogin: true,
@@ -42,21 +46,39 @@ const reducer = (state = initialState, action) => {
 			};
 		}
 		case LOGIN_FAIL: {
-			console.log('login fail-> userinfo', action.data);
 			return {
 				...state,
 				isLogin: false,
 			};
 		}
-		case LOG_OUT: {
+		case LOG_OUT_SUCCESS: {
 			return {
 				isLogin: false,
+				user: null,
 			};
 		}
 		default: {
 			// 정의해준 액션 이외에 다른 액션이 들어오면?
 			return {
 				...state,
+			};
+		}
+		case LOAD_USER_REQUEST: {
+			return {
+				...state,
+			};
+		}
+		case LOAD_USER_SUCCESS: {
+			return {
+				...state,
+				user: action.data,
+				isLogin: true,
+			};
+		}
+		case LOAD_USER_FAIL: {
+			return {
+				...state,
+				isLogin: false,
 			};
 		}
 	}

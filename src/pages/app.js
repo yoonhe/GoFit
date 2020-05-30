@@ -1,13 +1,23 @@
-import React from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Main from './main';
 import Login from '../components/Login';
 import Signup from '../components/Signup';
 import { Switch, Route, Redirect, BrowserRouter } from 'react-router-dom';
 import {} from 'react-router';
+import { LOAD_USER_REQUEST } from '../reducers/user';
 
 const App = () => {
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const { isLogin, user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+		if (!user) {
+			dispatch({
+				type: LOAD_USER_REQUEST,
+			});
+		} 
+	}, [user && user.id])
 
   return (
     <div>
