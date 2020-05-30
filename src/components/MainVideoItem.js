@@ -59,10 +59,6 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
         type: ADD_VIDEO,
         selectVideo: SelectedVideoData(),
       });
-      if (videoList && videoList.length - 1 === index) {
-        console.log('last index ? ', index);
-        changeVideoIndex(index + 1);
-      }
     } else if (selectedVideo) {
       dispatch({
         type: EDIT_VIDEO,

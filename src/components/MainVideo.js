@@ -8,17 +8,10 @@ import MainVideoItem from './MainVideoItem';
 const MainVideo = () => {
   const { videoList } = useSelector((store) => store.video);
   const dispatch = useDispatch();
-  // console.log('videoList.length ? ', !!videoList.length);
-  const lastIndex = !videoList.length ? 0 : videoList.length - 1;
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   const clickVideoIndex = useCallback((e) => {
     setCurrentVideoIndex(Number(e.target.innerText));
-  }, []);
-
-  const changeVideoIndex = useCallback((index) => {
-    console.log('changeVideoIndex 클릭됨 ? ', index);
-    setCurrentVideoIndex(index);
   }, []);
 
   useEffect(() => {
@@ -26,11 +19,12 @@ const MainVideo = () => {
       type: VIDEO_LIST_REQUEST,
     });
   }, []);
+
+  const lastIndex = !videoList.length ? 0 : videoList.length - 1;
   useEffect(() => {
     setCurrentVideoIndex(lastIndex);
   }, [lastIndex]);
 
-  console.log('currentVideoIndex ? ', currentVideoIndex);
   return (
     <>
       <MainVideoWrap>
@@ -41,7 +35,6 @@ const MainVideo = () => {
             videoData={videoList[0]}
             key={`video ${0}`}
             index={0}
-            changeVideoIndex={changeVideoIndex}
           />
         ) : (
           videoList.map((video, index) => {
@@ -51,7 +44,6 @@ const MainVideo = () => {
                 videoData={video}
                 key={`video ${index}`}
                 index={index}
-                changeVideoIndex={changeVideoIndex}
               />
             );
           })
