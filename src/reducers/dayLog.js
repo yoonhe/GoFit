@@ -15,11 +15,13 @@ const initialState = {
 	selectedDate: null,
 	isSelectedDate: false,
 	isFiltered: false,
+	date: null,
 };
 
-export const fetchDaylog = () => {
+export const fetchDaylog = (date) => {
 	return {
 		type: LOAD_DAYLOG,
+		date,
 	};
 };
 
@@ -45,6 +47,7 @@ export const unfilteredDaylog = () => {
 };
 
 export const selectDaylogDate = (date) => {
+	//console.log('selectDaylogDate action called with ??', date);
 	return {
 		type: SELECT_DATE,
 		date,
@@ -55,10 +58,12 @@ const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case GET_DAYLOG: {
 			// state 새로운 Log 추가하기
-			//console.log('action.daylogs: ', action.daylogs);
 			return {
 				...state,
 				daylogs: action.daylogs,
+				date: action.date,
+				isSelectedDate: false,
+				isFiltered: false,
 			};
 		}
 		case POST_DAYLOG: {

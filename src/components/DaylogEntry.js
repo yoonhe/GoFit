@@ -44,9 +44,8 @@ const DaylogEntry = ({ daylog }) => {
 
 	return (
 		<div>
-			<h4> Daylog Entry </h4>
-			<div> YoutubeTitle: {log.videoTitle}</div>
-			<div> Message: {log.message}</div>
+			<div> 영상 제목: {log.videoTitle}</div>
+			<div> 운동 소감: {log.message}</div>
 			{log.weight !== null ? (
 				<div>Weight: {' ' + log.weight + ' kg'} </div>
 			) : (

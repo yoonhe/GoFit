@@ -11,26 +11,36 @@ import axios from 'axios';
 import moment from 'moment';
 const ROOT_URL = 'http://localhost:7777/api/';
 
-function getDaylogAPI() {
+function getDaylogAPI(date) {
 	console.log('get DAYLOG API CALLED!');
 	/* 	const today = moment().format('YYYY-MM-DD');
 	const getURL = ROOT_URL + today;
-    console.log('get URL Momth', getURL); */
-	return axios.get(ROOT_URL + 'daylog').then((res) => {
-		//console.log('axios get data', res);
-		return res;
-	});
+	console.log('get URL Momth', getURL); */
+	//console.log('selected date??', date);
+	if (date === undefined) {
+		return axios.get(ROOT_URL + 'daylog/').then((res) => {
+			//console.log('axios get data', res);
+			return res;
+		});
+	} else {
+		return axios.get(ROOT_URL + 'daylog/' + date).then((res) => {
+			//console.log('axios get data', res);
+			return res;
+		});
+	}
 	//return axios.get(ROOT_URL/daylog)
 	//return daylogSample;
 }
 
-function* fetchDaylog() {
+function* fetchDaylog(data) {
 	try {
-		const daylogs = yield call(getDaylogAPI);
-		//console.log('Saga daylogs???', daylogs);
+		const daylogs = yield call(getDaylogAPI, data.date);
+		//const currShowDate = action.date ? action.date : moment().format('YYYY-MM');
+		//console.log('Saga daylogs currShowDate???', daylogs, currShowDate);
 		yield put({
 			type: GET_DAYLOG,
 			daylogs: daylogs.data,
+			date: data.date,
 		});
 	} catch (e) {
 		console.log('fetch Daylogs Error: ', e.message);
@@ -102,6 +112,7 @@ function postDaylogAPI(data) {
 function* postDaylog(data) {
 	//console.log(NEW_DAYLOG, 'called, data is? ', data);
 	try {
+		console.log('post data', data);
 		yield call(postDaylogAPI, data.newDaylog);
 		yield put({ type: POST_DAYLOG });
 		yield put({ type: LOAD_DAYLOG });
@@ -115,7 +126,7 @@ function* watchPostDaylog() {
 }
 function filterTagAPI(tagid) {
 	//console.log('filterTag API tagid????', tagid);
-	return axios.get(ROOT_URL + tagid).then((res) => {
+	return axios.get(ROOT_URL + 'daylog/tag/' + tagid).then((res) => {
 		console.log('filterTagAPI res', res.data);
 		return res.data;
 	});
