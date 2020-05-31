@@ -1,14 +1,17 @@
 // Main Video 컴포넌트
 import React, { useState, useCallback, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { MainVideoWrap } from '../style/MainVideoStyle';
+import { MainVideoWrap, Popup } from '../style/MainVideoStyle';
 import { VIDEO_LIST_REQUEST } from '../reducers/video';
 import MainVideoItem from './MainVideoItem';
+import { LOAD_RANKING } from '../reducers/ranking';
+import RankingPopup from './RankingPopup';
 
 const MainVideo = () => {
   const { videoList } = useSelector((store) => store.video);
   const dispatch = useDispatch();
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [showRankingPopup, setshowRankingPopup] = useState(false); //랭킹팝업 추가
 
   const clickVideoIndex = useCallback((e) => {
     setCurrentVideoIndex(Number(e.target.innerText));
@@ -24,6 +27,15 @@ const MainVideo = () => {
   useEffect(() => {
     setCurrentVideoIndex(lastIndex);
   }, [lastIndex]);
+
+  const showRankingPopupOpen = useCallback(() => {
+    setshowRankingPopup(true);
+  }, []);
+
+  const showRankingClosePopup = useCallback(() => {
+    dispatch({ type: LOAD_RANKING });
+    setshowRankingPopup(false);
+  }, []);
 
   return (
     <>
@@ -62,6 +74,14 @@ const MainVideo = () => {
               );
             })}
           </ul>
+        )}
+        <button onClick={showRankingPopupOpen}>주간랭킹</button>
+        {showRankingPopup && (
+          <Popup>
+            <div className="inner">
+              <RankingPopup showRankingClosePopup={showRankingClosePopup} />
+            </div>
+          </Popup>
         )}
       </MainVideoWrap>
     </>

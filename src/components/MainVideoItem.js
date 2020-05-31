@@ -29,7 +29,6 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
   const [playerState, setPlayerState] = useState('unstarted');
   const [showSelectedVideoPopup, setShowSelectedVideoPopup] = useState(false);
   const [showDaylogInputPopup, setshowDaylogInputPopup] = useState(false);
-  const [showRankingPopup, setshowRankingPopup] = useState(false); //랭킹팝업 추가
   // console.log('videoData ? ', videoData['Videos.url']);
   // console.log를 찍으면 오류나는 이유 찾는중..
 
@@ -107,17 +106,8 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
     setshowDaylogInputPopup(false);
   }, []);
 
-  const showRankingPopupOpen = useCallback(() => {
-    setshowRankingPopup(true);
-  }, []);
-  const showRankingClosePopup = useCallback(() => {
-    dispatch({ type: LOAD_RANKING });
-    setshowRankingPopup(false);
-  }, []);
-
   return (
     <div className={`video-item-wrap ${className}`}>
-      <button onClick={showRankingPopupOpen}>주간랭킹</button>
       {!videoData ? (
         <SelectedVideoButton onClick={showPopup}></SelectedVideoButton>
       ) : (
@@ -173,13 +163,6 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
             <DaylogInput
               showDaylogInputClosePopup={showDaylogInputClosePopup}
             />
-          </div>
-        </Popup>
-      )}
-      {showRankingPopup && (
-        <Popup>
-          <div className="inner">
-            <RankingPopup showRankingClosePopup={showRankingClosePopup} />
           </div>
         </Popup>
       )}
