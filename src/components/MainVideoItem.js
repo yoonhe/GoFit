@@ -14,6 +14,7 @@ import {
   START_EDIT_MODE,
   END_EDIT_MODE,
   REMOVE_SELECTED_VIDEO,
+  IS_VIDEO_UNSELECT,
 } from '../reducers/video';
 import * as daylogAction from '../reducers/dayLog';
 import { LOAD_RANKING } from '../reducers/ranking';
@@ -22,7 +23,7 @@ import RankingPopup from './RankingPopup';
 
 const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
   const dispatch = useDispatch();
-  const { selectedVideo, isEdit, videoList } = useSelector(
+  const { isVideoSelect, selectedVideo, isEdit, videoList } = useSelector(
     (store) => store.video
   );
   const [isWatchedVideo, setIsWatchedVideo] = useState(false); // 동영상을 봤는지 안봤는지
@@ -58,22 +59,25 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
   }, [selectedVideo]);
 
   const clickSearchPopupOkBtn = useCallback(() => {
-    if (selectedVideo && !isEdit) {
-      dispatch({
-        type: ADD_VIDEO,
-        selectVideo: SelectedVideoData(),
-      });
-    } else if (selectedVideo) {
-      dispatch({
-        type: EDIT_VIDEO,
-        selectVideo: SelectedVideoData(),
-        editVideoIndex: index,
-      });
+    console.log('isVideoSelect ? ', isVideoSelect);
+    if (isVideoSelect) {
+      if (selectedVideo && !isEdit) {
+        dispatch({
+          type: ADD_VIDEO,
+          selectVideo: SelectedVideoData(),
+        });
+      } else if (selectedVideo) {
+        dispatch({
+          type: EDIT_VIDEO,
+          selectVideo: SelectedVideoData(),
+          editVideoIndex: index,
+        });
+      }
     }
 
     dispatch({ type: END_EDIT_MODE });
     setShowSelectedVideoPopup(false);
-  }, [selectedVideo]);
+  }, [selectedVideo, isVideoSelect]);
 
   const changePlayerStateShow = useCallback((playerStatus) => {
     // 유투브 플레이어 스테이트 테스트중
@@ -142,6 +146,7 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
             onClick={() => {
               showPopup();
               dispatch({ type: START_EDIT_MODE });
+              dispatch({ type: IS_VIDEO_UNSELECT });
             }}
           >
             수정
