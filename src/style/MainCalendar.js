@@ -1,21 +1,55 @@
 import styled from 'styled-components';
 
 export const CalendarWrap = styled.div`
-  width: 40%;
-  & > * {
-  }
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 350px;
+  color: #666;
   & > div {
     margin: 0 auto;
-    width: 350px;
   }
   .calendar-head {
     position: relative;
-    margin-bottom: 10px;
+    padding: 10px 0;
     text-align: center;
   }
 
   .calendar-head > button {
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #dcdcdc;
+    border: none;
+    color: #fff;
+    width: 30px;
+    border-radius: 50%;
+    height: 30px;
+    text-indent: -999999px;
+    font-size: 0;
+    transition: 0.2s linear;
+  }
+  .calendar-head > button:before {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    content: '';
+  }
+  .calendar-head > .prev:before {
+    border-right: 8px solid #fff;
+    margin-left: -1px;
+  }
+  .calendar-head > .next:before {
+    border-left: 8px solid #fff;
+    margin-right: -1px;
+  }
+
+  .calendar-head > button:hover {
+    background: tomato;
   }
 
   .calendar-head > .prev {
@@ -39,13 +73,13 @@ export const CalendarWrap = styled.div`
     text-align: center;
     cursor: pointer;
 
-    &:first-child,
-    &:nth-child(7n + 1) {
-      color: red;
-    }
-    &:nth-child(7n) {
-      color: blue;
-    }
+    // &:first-child,
+    // &:nth-child(7n + 1) {
+    //   color: red;
+    // }
+    // &:nth-child(7n) {
+    //   color: blue;
+    // }
     &.prev-month-day {
       color: #dcdcdc;
     }
@@ -60,7 +94,7 @@ export const CalendarWrap = styled.div`
       left: 50%;
       width: calc(100% - 15px);
       height: calc(100% - 15px);
-      background: skyblue;
+      background: tomato;
       border-radius: 50%;
       transform: translate(-50%, -50%);
       content: '';
