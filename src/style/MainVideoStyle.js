@@ -18,6 +18,25 @@ export const VideoAddBtn = styled.p`
     font-size: 30px;
     z-index: 3;
   }
+
+  & button:after {
+    position: absolute;
+    left: -132%;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px;
+    width: 100px;
+    background: #fff;
+    color: #333;
+    font-size: 14px;
+    content: '비디오 추가';
+    opacity: 0;
+    transition: 0.3s linear;
+    border-radius: 15px;
+  }
+  & button:hover:after {
+    opacity: 1;
+  }
 `;
 export const MainVideoWrap = styled.div`
   position: relative;
@@ -167,6 +186,7 @@ export const SelectVideoTitle = styled.div`
   background: #fff;
 
   & button {
+    display: block;
     position: absolute;
     right: 20px;
     top: 50%;
