@@ -31,31 +31,36 @@ export const VideoAddBtn = styled.p`
     font-size: 14px;
     content: '비디오 추가';
     opacity: 0;
+    visibility: hidden;
     transition: 0.3s linear;
     border-radius: 15px;
   }
   & button:hover:after {
     opacity: 1;
+    visibility: visible;
   }
 `;
 export const MainVideoWrap = styled.div`
   position: relative;
-  padding-right: 400px;
+  padding: 0 400px 50px 0;
   width: 100%;
   height: 100%;
+  border-bottom: 1px solid #dcdcdcd6;
+
   & .video-item-wrap {
     display: none;
     position: relative;
     top: 0;
     left: 0;
     width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
   }
   & .video-item-wrap.on {
     display: block;
   }
   & .video-item {
     position: relative;
-    border-radius: 15px 15px 0 0;
     overflow: hidden;
     animation: fadeInOut 1s;
     @keyframes fadeInOut {
@@ -138,19 +143,21 @@ export const MainVideoWrap = styled.div`
   & .video-index-button li + li {
     margin-top: 20px;
   }
+  & .ranking-btn {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+  }
 `;
 export const SelectedVideoButton = styled.button`
   display: block;
   position: relative;
   width: 100%;
   height: 600px;
-  border: 10px solid #dcdcdc;
+  border: none;
   box-sizing: border-box;
   cursor: pointer;
-  background: none;
-  &:hover {
-    border-color: rgba(255, 99, 71, 0.5);
-  }
+  background: #dcdcdc;
 
   &:after,
   &:before {
@@ -159,7 +166,7 @@ export const SelectedVideoButton = styled.button`
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    background: #dcdcdc;
+    background: #fff;
     content: '';
   }
   &:after {
@@ -170,25 +177,23 @@ export const SelectedVideoButton = styled.button`
     width: 10px;
     height: 200px;
   }
-  &:hover:after,
-  &:hover:before {
-    background: rgba(255, 99, 71, 0.5);
-  }
 `;
 
 export const SelectVideoTitle = styled.div`
   position: relative;
   margin-top: -4px;
-  padding: 30px 100px 30px 20px;
+  padding: 25px 100px 25px 15px;
   border: 1px solid #dcdcdc;
   border-top: 0;
   border-radius: 0 0 15px 15px;
   background: #fff;
+  font-size: 15px;
+  line-height: 1.5;
 
   & button {
     display: block;
     position: absolute;
-    right: 20px;
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
     padding: 10px 20px;

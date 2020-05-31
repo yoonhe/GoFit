@@ -12,6 +12,6 @@ export const MainWrap = styled.div`
 
 export const MainTopWrap = styled.div`
   position: relative;
-  margin-top: 50px;
+  margin: 50px 0;
   padding: 0 0 10px;
 `;

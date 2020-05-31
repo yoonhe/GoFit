@@ -75,7 +75,9 @@ const MainVideo = () => {
             })}
           </ul>
         )}
-        <button onClick={showRankingPopupOpen}>주간랭킹</button>
+        <button className="ranking-btn" onClick={showRankingPopupOpen}>
+          주간랭킹
+        </button>
         {showRankingPopup && (
           <Popup>
             <div className="inner">
