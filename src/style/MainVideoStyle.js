@@ -21,9 +21,9 @@ export const VideoAddBtn = styled.p`
 `;
 export const MainVideoWrap = styled.div`
   position: relative;
+  padding-right: 400px;
   width: 100%;
   height: 100%;
-
   & .video-item-wrap {
     display: none;
     position: relative;
@@ -36,6 +36,8 @@ export const MainVideoWrap = styled.div`
   }
   & .video-item {
     position: relative;
+    border-radius: 15px 15px 0 0;
+    overflow: hidden;
     animation: fadeInOut 1s;
     @keyframes fadeInOut {
       0% {
@@ -89,17 +91,20 @@ export const MainVideoWrap = styled.div`
   }
 
   & .video-index-button {
-    padding: 0;
-    margin-top: 20px;
-    width: 100%;
+    position: absolute;
+    top: 180px;
+    right: 400px;
+    padding: 10px;
     text-align: center;
+    background: #fff;
+    box-shadow: -4px 3px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 15px 0 0 15px;
   }
   & .video-index-button li {
-    display: inline-block;
     width: 20px;
     height: 20px;
-    background: #fff;
-    border: 1px solid #dcdcdc;
+    background: tomato;
+    opacity: 0.3;
     border-radius: 50%;
     text-indent: -999999rem;
     cursor: pointer;
@@ -109,9 +114,10 @@ export const MainVideoWrap = styled.div`
   & .video-index-button li:hover,
   & .video-index-button li.on {
     background: tomato;
+    opacity: 1;
   }
   & .video-index-button li + li {
-    margin-left: 20px;
+    margin-top: 20px;
   }
 `;
 export const SelectedVideoButton = styled.button`
@@ -153,9 +159,12 @@ export const SelectedVideoButton = styled.button`
 
 export const SelectVideoTitle = styled.div`
   position: relative;
-  margin-top: 15px;
-  padding: 20px 100px 20px 20px;
+  margin-top: -4px;
+  padding: 30px 100px 30px 20px;
   border: 1px solid #dcdcdc;
+  border-top: 0;
+  border-radius: 0 0 15px 15px;
+  background: #fff;
 
   & button {
     position: absolute;

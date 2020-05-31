@@ -117,6 +117,7 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
 
   return (
     <div className={`video-item-wrap ${className}`}>
+      <button onClick={showRankingPopupOpen}>주간랭킹</button>
       {!videoData ? (
         <SelectedVideoButton onClick={showPopup}></SelectedVideoButton>
       ) : (
@@ -175,7 +176,6 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
           </div>
         </Popup>
       )}
-      <button onClick={showRankingPopupOpen}>주간랭킹</button>
       {showRankingPopup && (
         <Popup>
           <div className="inner">

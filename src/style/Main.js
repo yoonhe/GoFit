@@ -11,6 +11,7 @@ export const MainWrap = styled.div`
 `;
 
 export const MainTopWrap = styled.div`
-  display: flex;
-  padding: 50px 0 10px;
+  position: relative;
+  margin-top: 50px;
+  padding: 0 0 10px;
 `;
