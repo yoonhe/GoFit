@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as daylogAction from '../reducers/dayLog';
 import waterImg from '../../water_icon3.jpg';
 import axios from 'axios';
@@ -80,7 +79,7 @@ const DaylogInput = (props) => {
 				<input name="weight" type="number" onChange={handleInputTextChange} />
 			</div>
 			<div>
-				Water Intake:{' '}
+				Water Intake:
 				<div>
 					<img
 						src={waterImg}
@@ -108,7 +107,7 @@ const DaylogInput = (props) => {
 				</div>
 			</div>
 			<div>
-				tags:{' '}
+				tags:
 				<input
 					name="tagInput"
 					onChange={handleInputTextChange}
