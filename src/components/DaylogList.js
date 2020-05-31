@@ -2,10 +2,15 @@ import React, { useMemo, Component } from 'react';
 import DaylogEntry from './DaylogEntry';
 import { useDispatch, useSelector } from 'react-redux';
 import * as daylogAction from '../reducers/dayLog';
+import moment from 'moment';
 
 const DaylogList = ({ daylogs }) => {
 	const dispatch = useDispatch();
-	const { selectedDate, isSelectedDate } = useSelector((state) => state.dayLog);
+	const { selectedDate, isSelectedDate, date } = useSelector(
+		(state) => state.dayLog
+	);
+	const { username } = useSelector((state) => state.user.user);
+
 	const dayGroup = (daylogs) => {
 		console.log('daylog group function called');
 		let newlogs = {};
@@ -33,10 +38,14 @@ const DaylogList = ({ daylogs }) => {
 	const handleBacktoDaylog = () => {
 		dispatch(daylogAction.unfilteredDaylog());
 	};
+	const currdate = moment().format('YYYY-MM');
+
 	if (!isSelectedDate) {
 		return (
 			<div>
-				<h3> Daylog List </h3>
+				<h3>
+					{username} 님의 {date || currdate} 월 운동기록 입니다.
+				</h3>
 				{daylogs.length !== 0 ? (
 					sortedDate.map((date) => {
 						console.log('nothing selected');

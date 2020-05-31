@@ -84,6 +84,7 @@ const MainCalendar = () => {
 			let copyMonth = Object.assign({}, currentMonth);
 			let selectedMonth = moment(copyMonth).set('month', monthNum);
 			dispatch(requestHealthLog(todayDate));
+			dispatch(Daylog.fetchDaylog(selectedMonth.format('YYYY-MM')));
 			setCurrentMonth(selectedMonth);
 		},
 		[currentMonth]

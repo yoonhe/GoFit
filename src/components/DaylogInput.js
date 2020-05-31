@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as daylogAction from '../reducers/dayLog';
+import { DaylogInputStyle, TagStyle } from '../style/DaylogStyle';
 import waterImg from '../../water_icon3.jpg';
+import plusImg from '../../plusbtn6.png';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -12,6 +14,7 @@ const DaylogInput = (props) => {
 	const dispatch = useDispatch();
 	const selectVideo = useSelector((state) => state.video.selectedVideo);
 	const selectedDetails = useSelector((state) => state.video.selectedDetails);
+	const { selectedDate } = useSelector((state) => state.dayLog);
 
 	const handleInputTextChange = (e) => {
 		const { name, value } = e.target;
@@ -35,7 +38,7 @@ const DaylogInput = (props) => {
 	};
 	const handleOK = () => {
 		console.log('OK Clicked!');
-		console.log(values);
+		//console.log(values);
 		const youtubeTime = selectedDetails
 			? selectedDetails.contentDetails.duration
 			: null;
@@ -44,11 +47,12 @@ const DaylogInput = (props) => {
 			...values,
 			selectVideo,
 			youtubeTime,
+			selectedDate,
 		};
 		// redux 에 있는 userid, youtube.title, youtube.time 정보를 전달 필요
 		// data: {userid, message, weight, youtube.title, youtube.time, youtube.url 등 selectVideo 전체}
 		// axios.post('localhost:7777', data)
-		console.log('확인 send data', data);
+		//console.log('확인 send data', data);
 		props.showDaylogInputClosePopup(data);
 	};
 	const handleTagAdd = (e) => {
@@ -66,63 +70,68 @@ const DaylogInput = (props) => {
 
 	return (
 		<div>
-			<h3> Daylog Input </h3>
-			<div>
-				<textarea
-					placeholder="오늘 운동 어땠나요?"
-					name="message"
-					onChange={handleInputTextChange}
-				/>
-			</div>
-			<div>
-				Wieght:
-				<input name="weight" type="number" onChange={handleInputTextChange} />
-			</div>
-			<div>
-				Water Intake:
+			<DaylogInputStyle>
+				<h3>
+					<span>오늘 운동 어땠나요?</span>
+				</h3>
 				<div>
-					<img
-						src={waterImg}
-						width="24px"
-						height="24px"
-						name="waterAdd"
-						onClick={handleWaterclick}
+					<textarea
+						placeholder="운동 완료!"
+						name="message"
+						onChange={handleInputTextChange}
 					/>
-					+300ml
-					{values.waterArr ? (
-						values.waterArr.map((el) => {
-							return (
-								<img
-									src={waterImg}
-									width="24px"
-									height="24px"
-									name="waterRemove"
-									onClick={handleWaterclick}
-								/>
-							);
-						})
-					) : (
-						<div></div>
-					)}
 				</div>
-			</div>
-			<div>
-				tags:
-				<input
-					name="tagInput"
-					onChange={handleInputTextChange}
-					onKeyPress={handleTagAdd}
-					value={values.tagInput}
-				/>
-				{values.tags ? (
-					values.tags.map((tag) => {
-						return <div className="Daylogtag">{tag}</div>;
-					})
-				) : (
-					<div></div>
-				)}
-			</div>
-			<button onClick={handleOK}> OK</button>
+				<div>
+					몸무게 :
+					<input name="weight" type="number" onChange={handleInputTextChange} />
+				</div>
+				<div>
+					오늘 물 마신 양( +300ml):
+					<div>
+						<img
+							src={plusImg}
+							width="40px"
+							height="40px"
+							name="waterAdd"
+							onClick={handleWaterclick}
+						/>
+						{values.waterArr ? (
+							values.waterArr.map((el) => {
+								return (
+									<img
+										src={waterImg}
+										width="40px"
+										height="40px"
+										name="waterRemove"
+										onClick={handleWaterclick}
+									/>
+								);
+							})
+						) : (
+							<div></div>
+						)}
+					</div>
+				</div>
+				<div className="tags">
+					tags:
+					<input
+						name="tagInput"
+						onChange={handleInputTextChange}
+						onKeyPress={handleTagAdd}
+						value={values.tagInput}
+					/>
+					<div className="Daylogtag">
+						{values.tags ? (
+							values.tags.map((tag) => {
+								return <div className="tag">{tag}</div>;
+							})
+						) : (
+							<div></div>
+						)}
+					</div>
+				</div>
+				<button onClick={handleOK}> OK</button>
+			</DaylogInputStyle>
 		</div>
 	);
 };
