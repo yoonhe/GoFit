@@ -15,7 +15,6 @@ function requestHealthLogAPI(currentDate) {
 function* requestHealthLog(action) {
   try {
     let actionData = yield requestHealthLogAPI(action.date);
-    console.log('3. requestHealthLogAPI 호출 성공');
     actionData = actionData.data
       .map((item) => item.createdAt.split('T')[0])
       .map((item) => {
@@ -27,7 +26,7 @@ function* requestHealthLog(action) {
       data: actionData,
     });
   } catch (err) {
-    console.log('requestHealthLogAPI err.response ? ', err.response);
+    console.error(e);
   }
 }
 

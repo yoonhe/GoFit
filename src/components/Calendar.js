@@ -10,6 +10,7 @@ const MainCalendar = () => {
 	const dispatch = useDispatch();
 	const { healthLog } = useSelector((store) => store.calendar);
 	const [currentMonth, setCurrentMonth] = useState(moment());
+	const [currentDay, setCurrentDay] = useState('');
 	const weekdays = moment.weekdaysShort(); // ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
 	const months = moment.months(); // ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 	const month = currentMonth.format('MMMM'); // MMMM => May, MM => 05, M=>5
@@ -19,15 +20,11 @@ const MainCalendar = () => {
 	const daysInMonth = currentMonth.daysInMonth(); // 이번달 날짜수(5월 => 31)
 	const firstDayMonth = moment(currentMonth).startOf('month').format('d'); // Day of week(이번달 첫날짜의 요일) => 0 ~ 6(일 ~ 토)
 
-	/* day 가져오는 코드 */
-	// const currentDate = currentMonth.get('date');
-	// const currentDay = currentMonth.format('D'); // D : 날짜, d : 요일
-
 	const todayDate = currentMonth.format('YYYY-MM');
+
 	useEffect(() => {
-		console.log('1. requestHealthLog 호출');
 		dispatch(requestHealthLog(todayDate));
-	}, [currentMonth]); // componentDidMount와 같은 역할
+	}, [currentMonth]);
 
 	const blankMaker = useCallback(() => {
 		let blank = [];
@@ -44,27 +41,28 @@ const MainCalendar = () => {
 
 	const calendarDayClickHandler = useCallback((e) => {
 		const clickDay = e.target.innerText;
+
 		let clickDayFormat =
 			e.target.innerText.length === 1 ? `0${clickDay}` : clickDay;
-		console.log('clickDayFormat ? ', clickDayFormat);
+
 		dispatch({
 			type: VIDEO_LIST_REQUEST,
 			data: `${todayDate}-${clickDayFormat}`,
 		});
-		// daylog filter 한줄 추가!
+
 		dispatch(Daylog.selectDaylogDate(`${todayDate}-${clickDayFormat}`));
-	});
+	}, []);
+
 	const dayInMonthMaker = useCallback(() => {
-		console.log('달력 헬스로그 ? ', healthLog);
 		let dayInMonth = [];
 		for (let d = 1; d <= daysInMonth; d++) {
-			// 해당하는 달에만 체크가 되야함.(해결전)
 			let isHealth;
 			if (healthLog) {
 				isHealth = healthLog.includes(d) ? 'selected' : '';
 			} else {
 				isHealth = '';
 			}
+
 			dayInMonth.push(
 				<span
 					onClick={calendarDayClickHandler}

@@ -83,11 +83,13 @@ export const CalendarWrap = styled.div`
     &.prev-month-day {
       color: #dcdcdc;
     }
-    &.selected {
+    &.selected,
+    &.clicked {
       position: relative;
       color: #fff;
     }
-    &.selected:before {
+    &.selected:before,
+    &.clicked:before {
       display: block;
       position: absolute;
       top: 50%;
@@ -99,6 +101,13 @@ export const CalendarWrap = styled.div`
       transform: translate(-50%, -50%);
       content: '';
       z-index: -1;
+    }
+    &.clicked {
+      color: #fff;
+    }
+    &.clicked:before {
+      // background: #dcdcdc;
+      opacity: 0.5;
     }
   }
 `;

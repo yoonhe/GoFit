@@ -21,7 +21,7 @@ function fetchApiData(searchTerm) {
     .get('/search', {
       params: {
         part: 'snippet',
-        maxResults: 6,
+        maxResults: 12,
         key: YOUTUBE_API_KEY,
         q: searchTerm.searchTerm,
       },
@@ -88,12 +88,10 @@ function requestDayVideoListApi(date) {
   return axios.get(`/video/${date}`);
 }
 function* requestVideoList(action) {
-  console.log('requestVideoList 실행 ', action.data);
   try {
     let videoList = yield action.data
       ? requestDayVideoListApi(action.data)
       : requestVideoListApi();
-    console.log('videoList ? ', videoList.data);
     yield put({ type: VIDEO_LIST_SUCCESS, videoList: videoList.data });
   } catch (e) {
     console.error(e);
