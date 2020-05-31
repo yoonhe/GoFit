@@ -37,7 +37,11 @@ const DaylogEntry = ({ daylog }) => {
 		dispatch(daylogAction.filterDaylogTag(name));
 	};
 	//water === 0 일때 배열 생성됨
-	log.water.pop();
+	if (daylog.Healthlog.water === null) {
+		log.water.pop();
+	}
+	console.log('log water????', log.water, daylog.Healthlog.water);
+
 	return (
 		<div>
 			<h4> Daylog Entry </h4>

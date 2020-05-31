@@ -33,12 +33,12 @@ const DaylogList = ({ daylogs }) => {
 	const handleBacktoDaylog = () => {
 		dispatch(daylogAction.unfilteredDaylog());
 	};
-	return (
-		<div>
-			<h3> Daylog List </h3>
-			{daylogs.length !== 0 ? (
-				sortedDate.map((date) => {
-					if (!isSelectedDate) {
+	if (!isSelectedDate) {
+		return (
+			<div>
+				<h3> Daylog List </h3>
+				{daylogs.length !== 0 ? (
+					sortedDate.map((date) => {
 						console.log('nothing selected');
 						return (
 							<div>
@@ -48,27 +48,33 @@ const DaylogList = ({ daylogs }) => {
 								))}
 							</div>
 						);
-					} else {
-						return (
-							<div>
-								<h3>{selectedDate}</h3>
-								{date === selectedDate ? (
-									daylogsGroupByDate[date]
-										.reverse()
-										.map((daylog) => <DaylogEntry daylog={daylog} />)
-								) : (
-									<div> No Daylog on {selectedDate}</div>
-								)}
-								<span onClick={handleBacktoDaylog}> Back to Daylog </span>
-							</div>
-						);
-					}
-				})
-			) : (
-				<div></div>
-			)}
-		</div>
-	);
+					})
+				) : (
+					<div></div>
+				)}
+			</div>
+		);
+	} else {
+		if (sortedDate.indexOf(selectedDate) !== -1) {
+			return (
+				<div>
+					<h3> Daylog List </h3>
+					<h3>{selectedDate}</h3>
+					{daylogsGroupByDate[selectedDate].reverse().map((daylog) => (
+						<DaylogEntry daylog={daylog} />
+					))}
+					<span onClick={handleBacktoDaylog}> Back to All Daylogs </span>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					<div> NO DAYLOG ON {selectedDate}</div>
+					<span onClick={handleBacktoDaylog}> Back to All Daylogs </span>
+				</div>
+			);
+		}
+	}
 };
 
 export default DaylogList;

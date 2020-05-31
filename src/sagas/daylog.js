@@ -9,7 +9,7 @@ import {
 } from '../reducers/dayLog';
 import axios from 'axios';
 import moment from 'moment';
-const ROOT_URL = 'http://localhost:7777/api/daylog/';
+const ROOT_URL = 'http://localhost:7777/api/';
 
 function getDaylogAPI() {
 	console.log('get DAYLOG API CALLED!');
