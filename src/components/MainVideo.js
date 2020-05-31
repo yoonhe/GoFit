@@ -7,19 +7,11 @@ import MainVideoItem from './MainVideoItem';
 
 const MainVideo = () => {
   const { videoList } = useSelector((store) => store.video);
-  const lastVideoIndex = videoList.length && videoList.length - 1;
   const dispatch = useDispatch();
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(
-    `${lastVideoIndex}`
-  );
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   const clickVideoIndex = useCallback((e) => {
-    setCurrentVideoIndex(e.target.innerText);
-  }, []);
-
-  const changeVideoIndex = useCallback((index) => {
-    console.log('changeVideoIndex 클릭됨 ? ', index);
-    setCurrentVideoIndex(index);
+    setCurrentVideoIndex(Number(e.target.innerText));
   }, []);
 
   useEffect(() => {
@@ -28,7 +20,11 @@ const MainVideo = () => {
     });
   }, []);
 
-  console.log('currentVideoIndex ? ', currentVideoIndex);
+  const lastIndex = !videoList.length ? 0 : videoList.length - 1;
+  useEffect(() => {
+    setCurrentVideoIndex(lastIndex);
+  }, [lastIndex]);
+
   return (
     <>
       <MainVideoWrap>
@@ -39,17 +35,15 @@ const MainVideo = () => {
             videoData={videoList[0]}
             key={`video ${0}`}
             index={0}
-            changeVideoIndex={changeVideoIndex}
           />
         ) : (
           videoList.map((video, index) => {
             return (
               <MainVideoItem
-                className={Number(currentVideoIndex) === index ? 'on' : ''}
+                className={currentVideoIndex === index ? 'on' : ''}
                 videoData={video}
                 key={`video ${index}`}
                 index={index}
-                changeVideoIndex={changeVideoIndex}
               />
             );
           })
@@ -59,7 +53,7 @@ const MainVideo = () => {
             {videoList.map((video, index) => {
               return (
                 <li
-                  className={Number(currentVideoIndex) === index ? 'on' : ''}
+                  className={currentVideoIndex === index ? 'on' : ''}
                   onClick={clickVideoIndex}
                   key={`videoIndex${index}`}
                 >
