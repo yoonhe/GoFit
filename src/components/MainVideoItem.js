@@ -60,19 +60,17 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
 
   const clickSearchPopupOkBtn = useCallback(() => {
     console.log('isVideoSelect ? ', isVideoSelect);
-    if (isVideoSelect) {
-      if (selectedVideo && !isEdit) {
-        dispatch({
-          type: ADD_VIDEO,
-          selectVideo: SelectedVideoData(),
-        });
-      } else if (selectedVideo) {
-        dispatch({
-          type: EDIT_VIDEO,
-          selectVideo: SelectedVideoData(),
-          editVideoIndex: index,
-        });
-      }
+    if (isVideoSelect && selectedVideo && !isEdit) {
+      dispatch({
+        type: ADD_VIDEO,
+        selectVideo: SelectedVideoData(),
+      });
+    } else if (isVideoSelect && selectedVideo) {
+      dispatch({
+        type: EDIT_VIDEO,
+        selectVideo: SelectedVideoData(),
+        editVideoIndex: index,
+      });
     }
 
     dispatch({ type: END_EDIT_MODE });
