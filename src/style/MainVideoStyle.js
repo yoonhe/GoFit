@@ -49,6 +49,7 @@ export const MainVideoWrap = styled.div`
   }
   & .video-item.complete {
     position: relative;
+    cursor: not-allowed;
   }
   & .video-item.complete:before {
     position: absolute;
@@ -75,7 +76,6 @@ export const MainVideoWrap = styled.div`
     color: #fff;
     opacity: 0.9;
     content: 'COMPLETE';
-    cursor: not-allowed;
     z-index: 2;
   }
 
