@@ -10,7 +10,7 @@ const MainCalendar = () => {
   const dispatch = useDispatch();
   const { healthLog } = useSelector((store) => store.calendar);
   const [currentMonth, setCurrentMonth] = useState(moment());
-  const [clickDayIndex, setClickDayIndex] = useState('');
+  const [currentDay, setCurrentDay] = useState('');
   const weekdays = moment.weekdaysShort(); // ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
   const months = moment.months(); // ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
   const month = currentMonth.format('MMMM'); // MMMM => May, MM => 05, M=>5
@@ -21,6 +21,7 @@ const MainCalendar = () => {
   const firstDayMonth = moment(currentMonth).startOf('month').format('d'); // Day of week(이번달 첫날짜의 요일) => 0 ~ 6(일 ~ 토)
 
   const todayDate = currentMonth.format('YYYY-MM');
+
   useEffect(() => {
     dispatch(requestHealthLog(todayDate));
   }, [currentMonth]);
@@ -40,19 +41,20 @@ const MainCalendar = () => {
 
   const calendarDayClickHandler = useCallback((e) => {
     const clickDay = e.target.innerText;
-    setClickDayIndex(Number(clickDay));
+
     let clickDayFormat =
       e.target.innerText.length === 1 ? `0${clickDay}` : clickDay;
+
     dispatch({
       type: VIDEO_LIST_REQUEST,
       data: `${todayDate}-${clickDayFormat}`,
     });
+
     dispatch(Daylog.selectDaylogDate(`${todayDate}-${clickDayFormat}`));
   }, []);
 
   const dayInMonthMaker = useCallback(() => {
     let dayInMonth = [];
-    console.log('clickDayIndex ? ', clickDayIndex);
     for (let d = 1; d <= daysInMonth; d++) {
       let isHealth;
       if (healthLog) {
@@ -60,20 +62,19 @@ const MainCalendar = () => {
       } else {
         isHealth = '';
       }
-      const isClicked = clickDayIndex === d ? 'clicked' : '';
 
       dayInMonth.push(
         <span
           onClick={calendarDayClickHandler}
           key={`healthDay${d}`}
-          className={isHealth ? isHealth : isClicked}
+          className={isHealth}
         >
           {d}
         </span>
       );
     }
     return dayInMonth;
-  }, [healthLog, clickDayIndex]);
+  }, [healthLog]);
 
   const setMonth = useCallback(
     (buttonType) => {
@@ -85,15 +86,6 @@ const MainCalendar = () => {
     },
     [currentMonth]
   );
-
-  useEffect(() => {
-    console.log('effect');
-    console.log(name);
-    return () => {
-      console.log('cleanup');
-      console.log(name);
-    };
-  });
 
   return (
     <CalendarWrap>
