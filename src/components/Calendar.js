@@ -7,19 +7,16 @@ import { VIDEO_LIST_REQUEST } from '../reducers/video';
 import * as Daylog from '../reducers/dayLog';
 
 const MainCalendar = () => {
-	const dispatch = useDispatch();
-	const { healthLog } = useSelector((store) => store.calendar);
-	const [currentMonth, setCurrentMonth] = useState(moment());
-	const [currentDay, setCurrentDay] = useState('');
-	const weekdays = moment.weekdaysShort(); // ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-	const months = moment.months(); // ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-	const month = currentMonth.format('MMMM'); // MMMM => May, MM => 05, M=>5
-	let monthNum = Number(months.indexOf(month));
-
-	const year = currentMonth.format('Y');
-	const daysInMonth = currentMonth.daysInMonth(); // 이번달 날짜수(5월 => 31)
-	const firstDayMonth = moment(currentMonth).startOf('month').format('d'); // Day of week(이번달 첫날짜의 요일) => 0 ~ 6(일 ~ 토)
-
+  const dispatch = useDispatch();
+  const { healthLog } = useSelector((store) => store.calendar);
+  const [currentMonth, setCurrentMonth] = useState(moment());
+  const weekdays = moment.weekdaysShort(); // ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+  const months = moment.months(); // ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+  const month = currentMonth.format('MMMM'); // MMMM => May, MM => 05, M=>5
+  let monthNum = Number(months.indexOf(month));
+  const year = currentMonth.format('Y');
+  const daysInMonth = currentMonth.daysInMonth(); // 이번달 날짜수(5월 => 31)
+  const firstDayMonth = moment(currentMonth).startOf('month').format('d'); // Day of week(이번달 첫날짜의 요일) => 0 ~ 6(일 ~ 토)
 	const todayDate = currentMonth.format('YYYY-MM');
 
 	useEffect(() => {
@@ -39,19 +36,22 @@ const MainCalendar = () => {
 		return blank;
 	}, [currentMonth]);
 
-	const calendarDayClickHandler = useCallback((e) => {
-		const clickDay = e.target.innerText;
+  const calendarDayClickHandler = useCallback(
+    (e) => {
+      const clickDay = e.target.innerText;
 
-		let clickDayFormat =
-			e.target.innerText.length === 1 ? `0${clickDay}` : clickDay;
+      let clickDayFormat =
+        e.target.innerText.length === 1 ? `0${clickDay}` : clickDay;
+      console.log('todayDate ? ', todayDate);
+      dispatch({
+        type: VIDEO_LIST_REQUEST,
+        data: `${todayDate}-${clickDayFormat}`,
+      });
 
-		dispatch({
-			type: VIDEO_LIST_REQUEST,
-			data: `${todayDate}-${clickDayFormat}`,
-		});
-
-		dispatch(Daylog.selectDaylogDate(`${todayDate}-${clickDayFormat}`));
-	}, []);
+      dispatch(Daylog.selectDaylogDate(`${todayDate}-${clickDayFormat}`));
+    },
+    [currentMonth]
+  );
 
 	const dayInMonthMaker = useCallback(() => {
 		let dayInMonth = [];
