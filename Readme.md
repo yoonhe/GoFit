@@ -50,13 +50,14 @@ Challengers can:
 ## Usage
 
 1. Signup
-   ![Signup](./SignupImg.png)
+<img src="./SignupImg.png" width = "300px"/>
 
 2. Login
-   ![Login](./LoginImg.png)
+<img src="./LoginImg.png" width = "300px"/>
 
 3. Main Page
-   ![MainPage](./MainPageImg.png)
+<img src="./MainPageImg.png" width = "800px"/>
+
    - Click the + button to select the Youtube.
    - Watch and follow the Youtube.
    - Write a Daylog with your feeling, weight, water intake and tags.
