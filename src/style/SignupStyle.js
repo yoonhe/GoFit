@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 export const SigninStyle = styled.div`
 	width: 320px;
-	height: 458px;
+	height: 490px;
 	border: 1px solid #dcdcdc;
 	background: white;
 	position: absolute;
@@ -49,6 +49,7 @@ export const SigninStyle = styled.div`
 	}
 	& h6 {
 		color: tomato;
+		text-align: center;
 	}
 `;
 
