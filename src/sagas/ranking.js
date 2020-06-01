@@ -7,8 +7,8 @@ const ROOT_URL = 'http://localhost:7777/api/user/rank';
 function getRankAPI() {
 	// console.log('get Rank!!??');
 	return axios.get(ROOT_URL).then(res => {
-		console.log('랭킹 확인 :', res[0]);
-		return res;
+		console.log('랭킹 확인 :', res.data);
+		return res.data;
 	});
 }
 
