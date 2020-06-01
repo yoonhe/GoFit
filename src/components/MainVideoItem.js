@@ -3,9 +3,10 @@ import YouTube from 'react-youtube';
 import {
   SelectVideoTitle,
   SelectedVideoButton,
-  Popup,
   VideoAddBtn,
+  Popup,
 } from '../style/MainVideoStyle';
+import { Popup2 } from '../style/DaylogStyle';
 import { useSelector, useDispatch } from 'react-redux';
 import SearchPopup from './SearchPopup';
 import {
@@ -30,11 +31,6 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
   const [playerState, setPlayerState] = useState('unstarted');
   const [showSelectedVideoPopup, setShowSelectedVideoPopup] = useState(false);
   const [showDaylogInputPopup, setshowDaylogInputPopup] = useState(false);
-  // console.log('videoData ? ', videoData['Videos.url']);
-  // console.log를 찍으면 오류나는 이유 찾는중..
-
-  // console.log('videoData ? ', videoData['Videos.url']);
-  // console.log를 찍으면 오류나는 이유 찾는중..
   const videoOptions = {
     height: '600',
     playerVars: {
@@ -84,19 +80,8 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
       onPlayerReady();
     } else if (playerStatus.data === -0) {
       setPlayerState('ended'); // ended
-      // alert('운동끝났습니다! 데이로그를 작성해야 달력에 체크표시가 됩니다!');
       showDaylogInputPopupOpen();
     }
-    /*
-      else if (playerStatus.data === 1) {
-        setPlayerState('playing'); // playing
-      } else if (playerStatus.data === 2) {
-        setPlayerState('paused'); // paused
-      } else if (playerStatus.data === 3) {
-        setPlayerState('buffering'); // buffering
-      } else if (playerStatus.data === 5) {
-        setPlayerState('cued'); // cued
-      }*/
   }, []);
 
   const showDaylogInputPopupOpen = useCallback(() => {
@@ -161,13 +146,13 @@ const MainVideoItem = ({ videoData, className, index, changeVideoIndex }) => {
         </Popup>
       )}
       {showDaylogInputPopup && (
-        <Popup>
+        <Popup2>
           <div className="inner">
             <DaylogInput
               showDaylogInputClosePopup={showDaylogInputClosePopup}
             />
           </div>
-        </Popup>
+        </Popup2>
       )}
     </div>
   );
