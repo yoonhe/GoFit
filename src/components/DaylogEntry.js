@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as daylogAction from '../reducers/dayLog';
-import waterImg from '../../water_icon3.jpg';
+import waterImg from '../../water_icon1.png';
 
 const DaylogEntry = ({ daylog }) => {
   //console.log('daylog entry called');

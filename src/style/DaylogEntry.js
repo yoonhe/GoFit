@@ -53,11 +53,13 @@ export const DaylogWrap = styled.div`
   }
 
   & .daylog-item .title .water-and-health .water-log {
-    margin-top: -3px;
     padding-left: 0;
   }
   & .daylog-item .title .water-and-health .water-log li {
     display: inline-block;
+  }
+  & .daylog-item .title .water-and-health .water-log li img {
+    vertical-align: middle;
   }
 
   & .daylog-item .health-feel {
