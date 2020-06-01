@@ -1,7 +1,8 @@
 # GoFit-Client
 
 GoFit-Client is a Web-Application for 'Home-Fitness' challengers with easy usability and brilliant UI.
-Challenges can watch 'Home-Fitness' Youtube video and leave a daily fitness logs and health logs. The workout date marked on calendar and daily workout logs can help challengers to keep the 'Hom-Fitness' everyday.
+
+Challengers can watch 'Home-Fitness' Youtube video and leave a daily fitness logs and health logs. The workout date marked on calendar and daily workout logs can help challengers to keep doing 'Home-Fitness' everyday.
 
 ## Table of Contents
 
@@ -35,7 +36,7 @@ Project is created with:
 
 ## Features
 
-Challengers can:
+Home-Fitness Challengers can:
 
 - Sign-up and sign-in the Go-Fit.
 - Search Home-Traning Youtube Video.
@@ -50,13 +51,17 @@ Challengers can:
 ## Usage
 
 1. Signup
-<img src="./SignupImg.png" width = "300px"/>
+   <img src="./SignupImg.png" width = "300px"/>
+
+   - Fill up the information.
 
 2. Login
-<img src="./LoginImg.png" width = "300px"/>
+   <img src="./LoginImg.png" width = "300px"/>
+
+   - Login GoFit with Email and Password.
 
 3. Main Page
-<img src="./MainPageImg.png" width = "800px"/>
+   <img src="./MainPageImg.png" width = "800px"/>
 
    - Click the + button to select the Youtube.
    - Watch and follow the Youtube.
