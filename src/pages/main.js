@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import '../style/index.css';
 import MainVideo from '../components/MainVideo';
 import SearchPopup from '../components/SearchPopup';
@@ -11,8 +11,11 @@ import * as daylogAction from '../reducers/dayLog';
 import * as loginAction from '../reducers/user';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import { HeaderWrap, MainWrap, MainTopWrap } from '../style/Main';
+import { HeaderWrap, MainWrap, MainTopWrap, RankingBtn } from '../style/Main';
 import { LOAD_USER_REQUEST } from '../reducers/user';
+import { LOAD_RANKING } from '../reducers/ranking';
+import RankingPopup from '../components/RankingPopup';
+import { RankPopupStyle } from '../style/RankingStyle';
 
 axios.defaults.withCredentials = true;
 
@@ -20,6 +23,7 @@ const Main = (props) => {
   const daylogs = useSelector((state) => state.dayLog.daylogs);
   const { isLogin, user } = useSelector((state) => state.user);
   const { filtered, isFiltered } = useSelector((state) => state.dayLog);
+  const [showRankingPopup, setshowRankingPopup] = useState(false); //랭킹팝업 추가
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -38,15 +42,28 @@ const Main = (props) => {
     dispatch(daylogAction.unfilteredDaylog());
   };
 
-  //console.log('tag filtered', filtered);
+  const showRankingPopupOpen = useCallback(() => {
+    dispatch({ type: LOAD_RANKING }); //이 부분 오류 수정했습니다.
+    setshowRankingPopup(true);
+  }, []);
+
+  const showRankingClosePopup = useCallback(() => {
+    setshowRankingPopup(false);
+  }, []);
+
   return (
     <>
       <HeaderWrap>
-        <h1>GOFIT</h1>
-        <button className="logout-btn" onClick={handleLogout}>
-          {' '}
-          LOGOUT{' '}
-        </button>
+        <div className="inner">
+          <h1>GOFIT</h1>
+          <div className="right-item">
+            <button className="logout-btn" onClick={handleLogout}>
+              {' '}
+              LOGOUT{' '}
+            </button>
+            <RankingBtn onClick={showRankingPopupOpen} />
+          </div>
+        </div>
       </HeaderWrap>
       <MainWrap>
         <MainTopWrap>
@@ -65,6 +82,13 @@ const Main = (props) => {
           </div>
         )}
       </MainWrap>
+      {showRankingPopup && (
+        <RankPopupStyle>
+          <div className="inner">
+            <RankingPopup showRankingClosePopup={showRankingClosePopup} />
+          </div>
+        </RankPopupStyle>
+      )}
     </>
   );
 };

@@ -2,8 +2,12 @@ import styled from 'styled-components';
 
 export const DaylogWrap = styled.div`
   text-align: center;
-  margin: 0 150px;
+  margin: 0 100px;
+  & h2 {
+    font-size: 26px;
+  }
   & h3 {
+    margin-bottom: 15px;
     font-size: 22px;
     text-align: left;
   }
