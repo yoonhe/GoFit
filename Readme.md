@@ -51,23 +51,28 @@ Home-Fitness Challengers can:
 ## Usage
 
 1. Signup
-   <img src="./SignupImg.png" width = "300px"/>
+<img src="./SignupImg.png" width = "300px"/>
 
-   - Fill up the information.
+- Fill up the information.
 
 2. Login
-   <img src="./LoginImg.png" width = "300px"/>
+<img src="./LoginImg.png" width = "300px"/>
 
-   - Login GoFit with Email and Password.
+- Login GoFit with Email and Password.
 
 3. Main Page
-   <img src="./MainPageImg.png" width = "800px"/>
+<img src="./MainPageImg.png" width = "800px"/>
 
-   - Click the + button to select the Youtube.
-   - Watch and follow the Youtube.
-   - Write a Daylog with your feeling, weight, water intake and tags.
+- Click the + button to select the Youtube.
+- Watch and follow the Youtube.
+- Write a Daylog with your feeling, weight, water intake and tags.
 
 ## Things Todo
 
 - 비밀번호 잊었을때 비밀번호 초기화 링크 전송 기능
 - 월별 누적 시간, 몸무게, BMI 그래프로 보여주기
+
+## Thanks to
+
+- Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
+
