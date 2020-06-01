@@ -74,5 +74,5 @@ Home-Fitness Challengers can:
 
 ## Thanks to
 
-- Icons made by [Freepik](https://www.flaticon.com/authors/freepik){: target="_blank"} from [www.flaticon.com](https://www.flaticon.com/){: target="_blank"}
-- Sport vector created by [pikisuperstar](https://www.freepik.com/free-photos-vectors/sport){: target="_blank"}
+- Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
+- Sport vector created by [pikisuperstar](https://www.freepik.com/free-photos-vectors/sport)
