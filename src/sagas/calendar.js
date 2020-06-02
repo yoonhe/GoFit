@@ -6,6 +6,7 @@ import {
 } from '../reducers/calendar';
 
 import axios from 'axios';
+import moment from 'moment';
 
 function requestHealthLogAPI(currentDate) {
   // 서버로 헬스로그 요청 보내는 부분
@@ -16,10 +17,10 @@ function* requestHealthLog(action) {
   try {
     let actionData = yield requestHealthLogAPI(action.date);
     actionData = actionData.data
-      .map((item) => item.createdAt.split('T')[0])
-      .map((item) => {
-        return Number(item.split('-')[2]);
-      });
+      .map((item) => moment(item.createdAt).format('YYYY-MM-DD'))
+      .map((item) => item.split('-')[2]);
+
+    console.log('actionData ? ', actionData);
 
     yield put({
       type: HEALTH_LOG_SUCCESS,

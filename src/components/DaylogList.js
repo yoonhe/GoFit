@@ -16,10 +16,7 @@ const DaylogList = ({ daylogs }) => {
     console.log('daylog group function called');
     let newlogs = {};
     daylogs.map((daylog) => {
-      const daylogdate = daylog.createdAt.substring(
-        0,
-        daylog.createdAt.indexOf('T')
-      );
+      const daylogdate = moment(daylog.createdAt).format('YYYY-MM-DD');
       //console.log('daylogdate???', daylogdate);
       if (newlogs[daylogdate] === undefined) {
         newlogs[daylogdate] = [];
