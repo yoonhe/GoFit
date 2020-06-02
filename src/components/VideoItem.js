@@ -3,7 +3,7 @@ import { useDispatch, useEffect } from 'react-redux';
 import { selectVideo, loadVideoDetails } from '../reducers/video';
 import { GridItem } from '../style/PopupStyle';
 
-const VideoItem = ({ video, thumbnail, title, onClickRadio }) => {
+const VideoItem = ({ video, thumbnail, title, onClickRadio, index }) => {
 	// const [isSelect, setSelect] = useState(false);
 	const dispatch = useDispatch();
 
@@ -24,10 +24,13 @@ const VideoItem = ({ video, thumbnail, title, onClickRadio }) => {
 						name='videoRadio'
 						// checked={isSelect}
 						onChange={handleChange}
+						id={`radio${index}`}
 					/>
+					<label for={`radio${index}`}>
+						<img src={thumbnail} />
+						<div>{title.slice(0, 20).concat('...')}</div>
+					</label>
 				</div>
-				<img src={thumbnail} />
-				<div>{title.slice(0, 20).concat('...')}</div>
 			</GridItem>
 		</div>
 	);
