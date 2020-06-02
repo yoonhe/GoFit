@@ -18,6 +18,11 @@ export const HeaderWrap = styled.header`
   text-align: center;
   color: tomato;
   font-size: 30px;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 10;
   & .inner {
     position: relative;
     padding: 30px 0;
