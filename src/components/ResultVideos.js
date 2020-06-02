@@ -14,11 +14,12 @@ const ResultVideos = () => {
 	};
 
 	return (
-		<div>
+		<div className='result'>
 			<GridContainer>
-				{videos.map(video => {
+				{videos.map((video, index) => {
 					return (
 						<VideoItem
+							index={index}
 							key={video.etag}
 							video={video}
 							thumbnail={video.snippet.thumbnails.medium.url}
